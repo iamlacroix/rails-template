@@ -26,6 +26,7 @@ namespace :mongodb do
 	after "deploy:setup", "mongodb:create_database"
 	
 	
+	# Create YML
 	desc "Generate the mongoid.yml configuration file."
 	task :setup, roles: :app do
 		run "mkdir -p #{shared_path}/config"
@@ -33,6 +34,14 @@ namespace :mongodb do
 	end
 	after "deploy:setup", "mongodb:setup"
 	after "mongodb:create_database", "mongodb:setup"
+	
+	
+	# Symlink YML
+	desc "Symlink mongoid.yml"
+	task :symlink, roles: :app do
+		run "ln -nfs #{shared_path}/config/mongoid.yml #{release_path}/config/mongoid.yml"
+	end
+	after "deploy:finalize_update", "mongodb:symlink"
 	
 	
 	# Services

@@ -57,6 +57,7 @@ group :test do
 end
 
 # gem 'dalli' # Memcache
+gem 'foreman'
 gem 'unicorn'
 gem 'capistrano'
 gem 'exception_notification'

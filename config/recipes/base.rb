@@ -14,17 +14,40 @@ namespace :deploy do
 		run "#{sudo} apt-get -y install python-software-properties"
 	end
 	
-	%w[start stop restart].each do |command|
-		desc "#{command} unicorn server"
-		task command, roles: :app, except: {no_release: true} do
-			run "/etc/init.d/unicorn_#{application} #{command}"
-		end
-	end
+	# Use Foreman instead
+	# ==========
+	# %w[start stop restart].each do |command|
+	# 	desc "#{command} unicorn server"
+	# 	task command, roles: :app, except: {no_release: true} do
+	# 		run "/etc/init.d/unicorn_#{application} #{command}"
+	# 	end
+	# end
 	
-	desc "Symlink mongoid.yml"
-	task :symlink_config, roles: :app do
-		run "ln -nfs #{shared_path}/config/mongoid.yml #{release_path}/config/mongoid.yml"
+end
+
+
+# Foreman
+# =======
+after 'deploy:update', 'foreman:export'
+after 'deploy:update', 'foreman:restart'
+
+namespace :foreman do
+	desc "Export the Procfile to Ubuntu's upstart scripts"
+	task :export, :roles => :app do
+		run "cd #{release_path} && sudo bundle exec foreman export upstart /etc/init -a #{application} -u #{user} -l #{shared_path}/log"
 	end
-	after "deploy:finalize_update", "deploy:symlink_config"
-	
+	desc "Start the application services"
+	task :start, :roles => :app do
+		sudo "start #{application}"
+	end
+
+	desc "Stop the application services"
+	task :stop, :roles => :app do
+		sudo "stop #{application}"
+	end
+
+	desc "Restart the application services"
+	task :restart, :roles => :app do
+		run "sudo start #{application} || sudo restart #{application}"
+	end
 end
