@@ -1,5 +1,10 @@
 require 'erb'
 
+set_default(:mysql_host, "localhost")
+set_default(:mysql_user) { application }
+set_default(:mysql_password) { Capistrano::CLI.password_prompt "Enter #{environment} database password:" }
+set_default(:mysql_database) { "#{application}_production" }
+
 
 namespace :mysql do
 	
@@ -10,8 +15,8 @@ namespace :mysql do
 	EOF
 	task :dump, :roles => :db, :only => { :primary => true } do
 		prepare_from_yaml
-		run "mysqldump --user=#{db_user} -p --host=#{db_host} #{db_name} | bzip2 -z9 > #{db_remote_file}" do |ch, stream, out|
-			ch.send_data "#{db_pass}\n" if out =~ /^Enter password:/
+		run "mysqldump --user=#{mysql_user} -p --host=#{mysql_host} #{mysql_database} | bzip2 -z9 > #{db_remote_file}" do |ch, stream, out|
+			ch.send_data "#{mysql_password}\n" if out =~ /^Enter password:/
 			puts out
 		end
 	end
@@ -20,8 +25,8 @@ namespace :mysql do
 	desc "Restores the database from the latest compressed dump"
 	task :restore, :roles => :db, :only => { :primary => true } do
 		prepare_from_yaml
-		run "bzcat #{db_remote_file} | mysql --user=#{db_user} -p --host=#{db_host} #{db_name}" do |ch, stream, out|
-			ch.send_data "#{db_pass}\n" if out =~ /^Enter password:/
+		run "bzcat #{db_remote_file} | mysql --user=#{mysql_user} -p --host=#{mysql_host} #{mysql_database}" do |ch, stream, out|
+			ch.send_data "#{mysql_password}\n" if out =~ /^Enter password:/
 			puts out
 		end
 	end
@@ -36,10 +41,10 @@ namespace :mysql do
 	
 	desc "Installs MySQL via apt-get"
 	task :install, role: :db do
-		run "#{sudo} apt-get -y update"
+		# run "#{sudo} apt-get -y update"
 		run "#{sudo} apt-get -y install mysql-server"
 	end
-	after "deploy:install", "mysql:install"
+	# after "deploy:install", "mysql:install"
 	
 	
 	desc "Create MySQL database and user for this environment using prompted values"
@@ -47,8 +52,8 @@ namespace :mysql do
 		prepare_for_db_command
 
 		sql = <<-SQL
-		CREATE DATABASE #{db_name};
-		GRANT ALL PRIVILEGES ON #{db_name}.* TO #{db_user}@localhost IDENTIFIED BY '#{db_pass}';
+		CREATE DATABASE #{mysql_database};
+		GRANT ALL PRIVILEGES ON #{mysql_database}.* TO #{mysql_user}@localhost IDENTIFIED BY '#{mysql_password}';
 		SQL
 
 		run "mysql --user=#{db_admin_user} -p --execute=\"#{sql}\"" do |channel, stream, data|
@@ -62,36 +67,43 @@ namespace :mysql do
 	
 	
 	desc "Create database.yml in shared path with settings for current stage and test env"
-	task :create_yaml do      
-		set(:db_user) { Capistrano::CLI.ui.ask "Enter #{environment} database username:" }
-		set(:db_pass) { Capistrano::CLI.password_prompt "Enter #{environment} database password:" }
+	task :create_yaml do
+		# Original 'set' -----
+		# set(:mysql_user) { Capistrano::CLI.ui.ask "Enter #{environment} database username:" }
+		# set(:mysql_password) { Capistrano::CLI.password_prompt "Enter #{environment} database password:" }
+		# Custom 'set' -----
+		# set_default(:postgresql_user) { application }
+		# set_default(:mysql_password) { Capistrano::CLI.password_prompt "Enter #{environment} database password:" }
+		
+		template "mysql.yml.erb", "#{shared_path}/config/database.yml"
+		# TODO move this into ERB template, it's broken
+		# db_config = ERB.new <<-EOF
+		# base: &base
+		# adapter: mysql2
+		# encoding: utf8
+		# username: #{mysql_user}
+		# password: #{mysql_password}
+		# 
+		# #{environment}:
+		# database: #{application}_#{environment}
+		# <<: *base
+		# 
+		# test:
+		# database: #{application}_test
+		# <<: *base
+		# EOF
 
-		db_config = ERB.new <<-EOF
-		base: &base
-		adapter: mysql
-		encoding: utf8
-		username: #{db_user}
-		password: #{db_pass}
-
-		#{environment}:
-		database: #{application}_#{environment}
-		<<: *base
-
-		test:
-		database: #{application}_test
-		<<: *base
-		EOF
-
-		put db_config.result, "#{shared_path}/config/database.yml"
+		# put db_config.result, "#{shared_path}/config/database.yml"
 	end
 	after "deploy:setup", "mysql:create_yaml"
 	
 	
 	desc "Symlink the database.yml file into latest release"
-  task :symlink, roles: :app do
-    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-  end
-	after "deploy:finalize_update", "mysql:symlink"
+	task :symlink, roles: :app do
+		run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+	end
+	before "deploy:assets:precompile", "mysql:symlink"
+	after "deploy", "mysql:symlink"
 	
 	
 	# Sets database variables from remote database.yaml
@@ -99,10 +111,10 @@ namespace :mysql do
 		set(:db_file) { "#{application}-dump.sql.bz2" }
 		set(:db_remote_file) { "#{shared_path}/backup/#{db_file}" }
 		set(:db_local_file)  { "tmp/#{db_file}" }
-		set(:db_user) { db_config[rails_env]["username"] }
-		set(:db_pass) { db_config[rails_env]["password"] }
-		set(:db_host) { db_config[rails_env]["host"] }
-		set(:db_name) { db_config[rails_env]["database"] }
+		set(:mysql_user) { db_config[rails_env]["username"] }
+		set(:mysql_password) { db_config[rails_env]["password"] }
+		set(:mysql_host) { db_config[rails_env]["host"] }
+		set(:mysql_database) { db_config[rails_env]["database"] }
 	end
 	
 	
@@ -123,10 +135,10 @@ end
 
 
 def prepare_for_db_command
-	set :db_name, "#{application}_#{environment}"
+	# set :mysql_database, "#{application}_#{environment}"
 	set(:db_admin_user) { Capistrano::CLI.ui.ask "Username with priviledged database access (to create db):" }
-	set(:db_user) { Capistrano::CLI.ui.ask "Enter #{environment} database username:" }
-	set(:db_pass) { Capistrano::CLI.password_prompt "Enter #{environment} database password:" }
+	# set(:mysql_user) { Capistrano::CLI.ui.ask "Enter #{environment} database username:" }
+	# set(:mysql_password) { Capistrano::CLI.password_prompt "Enter #{environment} database password:" }
 end
 
 desc "Populates the database with seed data"
@@ -135,63 +147,6 @@ task :seed do
 	run "cd #{current_path}; rake RAILS_ENV=#{variables[:rails_env]} db:seed"
 end
 
-after "deploy:setup" do
-	db.create_yaml if Capistrano::CLI.ui.agree("Create database.yml in app's shared path? [Yn]")
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# namespace :mysql do
-# 	
-# 	desc "Installs Redis via apt-get"
-# 	task :install, role: :db do
-# 		run "#{sudo} apt-get -y update"
-# 		run "#{sudo} apt-get -y install mysql-server"
-# 	end
-# 	
-# 	
-# 	desc "Creates database and user"
-# 	task :setup, role: :db do
-# 		# create datase
-# 		mysql -u root -e "create database $1"; 
-# 		run %Q{#{sudo} -u postgres psql -c "create database #{postgresql_database} owner #{postgresql_user};"}
-# 		
-# 		run %Q{#{sudo} -u postgres psql -c "create user #{postgresql_user} with password '#{postgresql_password}';"}
-# 		# create user + password
-# 	end
-# 	
-# 	
-# 	desc "Starts MySQL server"
-# 	task :start, role: :db do
-# 		# start mysql server
-# 	end
-# 	
-# 	
-# 	desc "Stops MySQL server"
-# 	task :stop, role: :db do
-# 		# stop mysql server
-# 	end
-# 	
-# 	
+# after "deploy:setup" do
+# 	db.create_yaml if Capistrano::CLI.ui.agree("Create database.yml in app's shared path? [Yn]")
 # end

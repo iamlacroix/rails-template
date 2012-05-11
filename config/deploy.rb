@@ -9,7 +9,7 @@ load "config/recipes/mysql"
 load "config/recipes/redis"
 load "config/recipes/nodejs"
 load "config/recipes/rbenv"
-load "config/recipes/ruby"
+# load "config/recipes/ruby" # No long necessary, Foreman does not need sudo for bundle exec
 load "config/recipes/gitlab"
 load "config/recipes/check"
 

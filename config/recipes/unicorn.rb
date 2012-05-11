@@ -14,13 +14,15 @@ namespace :unicorn do
     run "#{sudo} mv /tmp/unicorn_init /etc/init.d/unicorn_#{application}"
     run "#{sudo} update-rc.d -f unicorn_#{application} defaults"
   end
-  after "deploy:setup", "unicorn:setup"
+  ##### Disable the following line if using Foreman #####
+  # after "deploy:setup", "unicorn:setup"
 
   %w[start stop restart].each do |command|
     desc "#{command} unicorn"
     task command, roles: :app do
       run "service unicorn_#{application} #{command}"
     end
-    after "deploy:#{command}", "unicorn:#{command}"
+    ##### Disable the following line if using Foreman #####
+    # after "deploy:#{command}", "unicorn:#{command}"
   end
 end
