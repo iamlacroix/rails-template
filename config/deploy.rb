@@ -4,23 +4,26 @@ load "config/recipes/base"
 load "config/recipes/nginx"
 load "config/recipes/unicorn"
 # load "config/recipes/mongodb"
-load "config/recipes/postgresql"
-# load "config/recipes/mysql"
-# load "config/recipes/redis"
+# load "config/recipes/postgresql"
+load "config/recipes/mysql"
+load "config/recipes/redis"
 load "config/recipes/nodejs"
 load "config/recipes/rbenv"
+load "config/recipes/ruby"
+load "config/recipes/gitlab"
 load "config/recipes/check"
 
-server "ip.address.of.server", :web, :app, :db, primary: true
+server "50.56.200.141", :web, :app, :db, primary: true
+set :environment, "production"
 
 set :user, "deploy"
-set :application, "application_name"
+set :application, "gitlab"
 set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache
 set :use_sudo, false
 
 set :scm, "git"
-set :repository, "git@lacroixdesign.net:application_name.git"
+set :repository, "git@lacroixdesign.net:gitlab.git"
 set :remote_repository, "origin" # default is "origin"
 set :branch, "master" # default is "master"
 
