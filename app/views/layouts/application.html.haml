@@ -1,41 +1,44 @@
 !!! 5
 	
-	/ .
-		
+%html
 
-		         ///   ///     ..=====..
-		        ///   ///   .:ooooooooooo:.
-		       ///   ///   .ooooooooooooooo.
-		      ///   ///   -ooooooooooooooooo-
-		     ///   ///    -ooooooooooooooooo-
-		    ///   ///     -ooooooooooooooooo-
-		   ///   ///       `ooooooooooooooo'
-		  ///   ///         `:ooooooooooo:'
-		 ///   ///             ''=====''
- 
-		 Designed & Developed by LaCroix Design Co.
-		   http://lacroixdesign.net
-	
-	
-		 .
+	/ 
+		_
+		_
+		_          ///   ///     ..=====..
+		_         ///   ///   .:ooooooooooo:.
+		_        ///   ///   .ooooooooooooooo.
+		_       ///   ///   -ooooooooooooooooo-
+		_      ///   ///    -ooooooooooooooooo-
+		_     ///   ///     -ooooooooooooooooo-
+		_    ///   ///       `ooooooooooooooo'
+		_   ///   ///         `:ooooooooooo:'
+		_  ///   ///             ''=====''
+		_  
+		_  Designed & Developed by LaCroix Design Co.
+		_    http://lacroixdesign.net
+		_  
+		_  
+		_
 	
 	%head
-		meta charset="utf-8"
-		title == ((@page_title || []) << 'Application Name').reject(&:blank?).map {|n| h(n)}.join(' &middot; ')
+		%meta(charset="utf-8")
+		%title
+			!= ((@page_title || []) << 'Application Name').reject(&:blank?).map {|n| h(n)}.join(' &middot; ')
 		
 		-# Kore ga general meta
-		meta name="description" content="Application Name"
-		meta name="author" content="LaCroix Design Co."
+		%meta(name="description" content="Application Name")
+		%meta(name="author" content="LaCroix Design Co.")
 		
 		-# Kore ga fav and touch icons, iOS meta
-		%link rel="shortcut icon" href="/favicon.ico"
-		%link rel="apple-touch-icon-precomposed" href="#{asset_path 'icons/ApplicationName_57.png'}"
-		%link rel="apple-touch-icon-precomposed" sizes="72x72" href="#{asset_path 'icons/ApplicationName_72.png'}"
-		%link rel="apple-touch-icon-precomposed" sizes="114x114" href="#{asset_path 'icons/ApplicationName_114.png'}"
-		%link rel="apple-touch-icon-precomposed" sizes="144x144" href="#{asset_path 'icons/ApplicationName_144.png'}"
-		%meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no, maximum-scale=1.0"
-		%meta name="apple-mobile-web-app-capable" content="yes"
-		%meta name="apple-mobile-web-app-status-bar-style" content="black"
+		%link(rel="shortcut icon" href="/favicon.ico")
+		%link(rel="apple-touch-icon-precomposed" href="#{asset_path 'icons/ApplicationName_57.png'}")
+		%link(rel="apple-touch-icon-precomposed" sizes="72x72" href="#{asset_path 'icons/ApplicationName_72.png'}")
+		%link(rel="apple-touch-icon-precomposed" sizes="114x114" href="#{asset_path 'icons/ApplicationName_114.png'}")
+		%link(rel="apple-touch-icon-precomposed" sizes="144x144" href="#{asset_path 'icons/ApplicationName_144.png'}")
+		%meta(name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no, maximum-scale=1.0")
+		%meta(name="apple-mobile-web-app-capable" content="yes")
+		%meta(name="apple-mobile-web-app-status-bar-style" content="black")
 
 		-# Kore ga HTML5 shim, for IE6-8 support of HTML elements
 		/[if lt IE 9]
@@ -46,7 +49,7 @@
 		= csrf_meta_tags
 		
 		-# Typekit
-		%script type="text/javascript" src="http://use.typekit.com/VVVVVVV.js"
+		%script(type="text/javascript" src="http://use.typekit.com/VVVVVVV.js")
 		:javascript
 			try{Typekit.load();}catch(e){}
 			
@@ -58,60 +61,10 @@
 	
 	
 	
-	%body onload="setTimeout(function() { window.scrollTo(0, 1) }, 100);"
+	%body(onload="setTimeout(function() { window.scrollTo(0, 1) }, 100);")
 		.container-fluid.header
 			.row
-				.navbar
-					.navbar-inner
-						.container
-							%a.toggle-menu.pull-right data-toggle="collapse" data-target=".nav-collapse"
-								= image_tag 'expand-yellow.png'
-								Menu
-							%a.brand href=root_url title="Home"
-								%h1
-									= image_tag 'flyby_icon.png', title: 'FlyBy Promotions'
-									%span FlyBy Promotions
-							.nav-collapse
-								%ul.nav
-									- if current_user
-										- if current_user.role_type == "Blogger"
-											/ %li = link_to 'Profile', user_path
-										- else
-											%li = link_to 'Bloggers', admin_bloggers_path
-								
-								
-								%ul.nav.pull-right
-									%li.dropdown
-										%a.dropdown-toggle.login-profile-link href="#" data-toggle="dropdown"
-											= login_or_name
-											%b.caret
-										
-										- if current_user
-											%ul.dropdown-menu
-												- if current_user.role_type == "Blogger"
-													%li = link_to 'Profile', user_path
-													%li.divider
-												%li = link_to 'Log out', logout_path
-											
-										- else
-											%ul.dropdown-menu
-												%li
-													= form_tag login_path, :url => user_path, :class => 'form login' do |f|
-												
-														.control-group
-															= text_field_tag :email, params[:email], :class => 'input-xlarge email-field', :placeholder => 'Email Address'
-												
-														.control-group
-															= password_field_tag :password, nil, :class => 'input-xlarge password-field', :placeholder => 'Password'
-													
-															= button_tag 'Sign In', :class => 'btn btn-yellow pull-right'
-												
-														.control-group
-															= link_to 'Forgot password?', new_password_reset_path, :class => 'pull-right'
-												
-															= label_tag :remember_me, :class => 'checkbox pull-left' do
-																= check_box_tag :remember_me
-																Remember me
+
 		
 		
 		
@@ -120,14 +73,6 @@
 			= yield
 		
 		
-		
-		
-		
-		.container-fluid.footer
-			= image_tag 'propeller_logo.png', title: 'Propeller'
-			.ldc
-				Designed &amp; Developed by 
-				%a href="http://lacroixdesign.net/" target="_blank" LaCroix Design Co.
 		
 		
 		
@@ -150,6 +95,6 @@
 			})();
 		
 		
-		-# #dev-browserwidth style="position: fixed;bottom: 0;left: 0;background: #555;color: #CCC;font-size: 0.75em;padding: 0.25em;text-shadow: black 1px 1px 1px;"
-		-# :javascript
-		-# 	function showWidth(){var w = $(window).width();$('#dev-browserwidth').text(w);}showWidth();$(window).resize(function(){showWidth();});
+		#dev-browserwidth(style="position: fixed;bottom: 0;left: 0;background: #555;color: #CCC;font-size: 0.75em;padding: 0.25em;text-shadow: black 1px 1px 1px;")
+		:javascript
+			function showWidth(){var w = $(window).width();$('#dev-browserwidth').text(w);}showWidth();$(window).resize(function(){showWidth();});
