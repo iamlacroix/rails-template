@@ -14,8 +14,6 @@
 //= require jquery_ujs
 //= require jquery-ui.min
 //= require lacroixdesign
-//= require jquery.tablesorter.min
-//= require jquery.markitup
 //= require jquery.placeholder
 //= require all
 //= require_self
