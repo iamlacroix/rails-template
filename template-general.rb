@@ -2,46 +2,94 @@ OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 options = {}
 git_path = "https://github.com/iamlacroix/rails-template/raw/master"
 
-puts "\r\n\r\n"
-puts "#########################"
-puts "## Application Options ##"
-puts "#########################"
 
 
 
+# ####################
 # 
-# App Config
+#       Boot Up
 # 
+# ####################
+
+
+def logo_output(content)
+  puts "\e[30m#{content}\e[0m"
+end
+
+def title_output(content)
+  puts "\e[37m\e[40m#{content}\e[0m"
+end
+
+
+puts "\r\n\r\n\r\n\r\n"
+title_output "       ~ LaCroix Design Co. ~       "
+
+
+puts "\r\n"
+logo_output "                                    "
+logo_output "        ///   ///     ..=====..     "
+logo_output "       ///   ///   .:ooooooooooo:.  "
+logo_output "      ///   ///   .ooooooooooooooo. "
+logo_output "     ///   ///   -ooooooooooooooooo-"
+logo_output "    ///   ///    -ooooooooooooooooo-"
+logo_output "   ///   ///     -ooooooooooooooooo-"
+logo_output "  ///   ///       `ooooooooooooooo' "
+logo_output " ///   ///         `:ooooooooooo:'  "
+logo_output "///   ///             ''=====''     "
+logo_output "                                    "
+# puts "\r\n"
+
+
+
+
+# ####################
+# 
+#     App Config
+# 
+# ####################
+
+
+##
+# Config
+##
+
+def generate_ask(question, choices)
+  ask("\r\n\r\n\e[40m\e[32m#{question}\e[0m\r\n\r\n#{choices}\r\n\r\n\e[40m\e[37mChoose:\e[0m")
+end
 
 # Database
-options[:db] = ask("\r\n\r\nWhich database would you like to use?\r\n\r\n(1) PostgreSQL [default]\r\n(2) MongoDB\r\n\r\nChoose:")
+options[:db] = generate_ask "Which database would you like to use?", "(1) PostgreSQL [default]\r\n(2) MongoDB"
 
 # App server
-options[:server] = ask("\r\n\r\nWhich application server would you like to use?\r\n\r\n(1) Unicorn [default]\r\n(2) Puma\r\n(3) Thin\r\n\r\nChoose:")
+options[:server] = generate_ask "Which application server would you like to use?", "(1) Unicorn [default]\r\n(2) Puma\r\n(3) Thin"
 
 # Type of production deployment
-options[:deployment] = ask("\r\n\r\nHow will you be deploying?\r\n\r\n(1) Capistrano\r\n(2) Heroku [default]\r\n\r\nChoose:")
+options[:deployment] = generate_ask "How will you be deploying?", "(1) Capistrano\r\n(2) Heroku [default]"
 
 
 
-# 
+## 
 # Options
-# 
+## 
+
+def generate_question(question)
+  yes?("\r\n\r\n\e[40m\e[33m#{question}\e[0m\r\n\e[37m[yN]\e[0m")
+end
 
 # Authentication?
-options[:auth] = yes?("\r\n\r\nWould you like to add authentication? (installs 'sorcery') [yN]")
+options[:auth] = generate_question "Would you like to add authentication? (installs 'sorcery')"
 
 # Admin?
-options[:admin] = yes?("\r\n\r\nWill this app have an admin feature? (installs 'inherited_resources') [yN]")
+options[:admin] = generate_question "Will this app have an admin feature? (installs 'inherited_resources')"
 
 # Attachments?
-options[:attachment] = yes?("\r\n\r\nWill you be uploading images/attachments to S3? (installs 'aws-sdk' & 'paperclip') [yN]")
+options[:attachment] = generate_question "Will you be uploading images/attachments to S3? (installs 'aws-sdk' & 'paperclip')"
 
 # Blog?
-options[:blog] = yes?("\r\n\r\nWill this app have a blog feature? (installs 'friendly_id') [yN]")
+options[:blog] = generate_question "Will this app have a blog feature? (installs 'friendly_id')"
 
 # CMS?
-options[:cms] = yes?("\r\n\r\nWill this app have a CMS feature? (installs 'ancestry' & 'friendly_id') [yN]")
+options[:cms] = generate_question "Will this app have a CMS feature? (installs 'ancestry' & 'friendly_id')"
 
 
 
@@ -53,9 +101,11 @@ options[:cms] = yes?("\r\n\r\nWill this app have a CMS feature? (installs 'ances
 
 
 
+# #########################
 # 
-# Begin Initialization
+#   Begin Initialization
 # 
+# #########################
 
 # comment_lines 'Gemfile', /sqlite3/
 
@@ -218,10 +268,13 @@ run "bundle install"
 
 
 
+# #########################
 # 
-# Remove & Fetch Files
+#   Remove & Fetch Files
 # 
+# #########################
 
+# 
 # Remove Files
 # 
 run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/* app/controllers/*"
@@ -230,20 +283,24 @@ run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts
 # --------------------------
 
 
+# 
 # Vendor Assets
 # 
 
 # -vendor/fonts
+# 
 %w( fontawesome-webfont.eot fontawesome-webfont.svg fontawesome-webfont.ttf fontawesome-webfont.woff ).each do |f|
   get "#{git_path}/vendor/assets/fonts/#{f}" ,"vendor/assets/fonts/#{f}"
 end
 
 # -vendor/javascripts
+# 
 %w( html5shim.js respond.js lacroixdesign.js jquery-ui.min.js jquery.placeholder.js jquery.ui.touch-punch.min.js lacroixdesign.datepicker.js ).each do |f|
   get "#{git_path}/vendor/assets/javascripts/#{f}" ,"vendor/assets/javascripts/#{f}"
 end
 
 # -vendor/stylesheets
+# 
 %w( lacroixdesign.css.scss font-awesome.scss lacroixdesign.datepicker.css ).each do |f|
   get "#{git_path}/vendor/assets/stylesheets/#{f}" ,"vendor/assets/stylesheets/#{f}"
 end
@@ -252,15 +309,18 @@ end
 # --------------------------
 
 
+# 
 # App Assets
 # 
 
 # -app/javascripts
+# 
 %w( application.js html5.js responsive.js all.js.coffee ).each do |f|
   get "#{git_path}/app/assets/javascripts/#{f}" ,"app/assets/javascripts/#{f}"
 end
 
 # -app/stylesheets
+# 
 %w( application.css.scss all.css.scss ).each do |f|
   get "#{git_path}/app/assets/stylesheets/#{f}" ,"app/assets/stylesheets/#{f}"
 end
@@ -269,23 +329,28 @@ end
 # --------------------------
 
 
-# Views
-# 
+## 
+# Helpers
+## 
 
 # -app/helpers
+# 
 get "#{git_path}/app/helpers/application_helper.rb" ,"app/helpers/application_helper.rb"
 
 
 # --------------------------
 
 
+## 
 # Views
-# 
+## 
 
 # -app/views/layout
+# 
 get "#{git_path}/app/views/layouts/application.html.haml" ,"app/views/layouts/application.html.haml"
 
 # -app/views/shared
+# 
 %w( _flash.html.haml _form_errors.html.haml ).each do |f|
   get "#{git_path}/app/views/shared/#{f}" ,"app/views/shared/#{f}"
 end
@@ -294,15 +359,18 @@ end
 # --------------------------
 
 
+## 
 # Initializers & Lib
-# 
+## 
 
 # -config/initializers
+# 
 %w( dev_environment.rb ).each do |f|
   get "#{git_path}/config/initializers/#{f}" ,"config/initializers/#{f}"
 end
 
 # -lib/modules
+# 
 %w( shared_methods.rb ).each do |f|
   get "#{git_path}/lib/modules/#{f}" ,"lib/modules/#{f}"
 end
@@ -311,15 +379,18 @@ end
 # --------------------------
 
 
+## 
 # Controllers
-# 
+## 
 
 # -home
+# 
 %w( application_controller.rb home_controller.rb ).each do |f|
   get "#{git_path}/app/controllers/#{f}" ,"app/controllers/#{f}"
 end
 
 # -admin
+# 
 if options[:admin]
   %w( application_controller.rb home_controller.rb ).each do |f|
     get "#{git_path}/app/controllers/admin/#{f}" ,"app/controllers/admin/#{f}"
@@ -331,10 +402,12 @@ end
 # --------------------------
 
 
+## 
 # Conditional Fetches
-# 
+## 
 
 # -heroku
+# 
 if options[:heroku]
   %w( Procfile Procfile.dev Procfile.production ).each do |f|
     get "#{git_path}/#{f}" ,"#{f}"
@@ -350,6 +423,7 @@ end
 
 
 # -capistrano
+# 
 if options[:capistrano]
   get "#{git_path}/Capfile" ,"Capfile"
   get "#{git_path}/config/deploy.rb" ,"config/deploy.rb"
@@ -369,12 +443,14 @@ end
 
 
 # -mongodb
+# 
 if options[:mongodb]
   get "#{git_path}/config/mongoid.yml" ,"config/mongoid.yml"
 end
 
 
 # -wysihtml5
+# 
 if options[:blog] || options[:cms] || options[:admin]
   %w( wysihtml5-0.3.0.min.js advanced.js ).each do |f|
     get "#{git_path}/vendor/assets/javascripts/wysihtml5/#{f}" ,"vendor/assets/javascripts/wysihtml5/#{f}"
@@ -383,6 +459,7 @@ end
 
 
 # -attachments
+# 
 if options[:attachment]
   %w( load-circle.gif load.gif loading.gif progressbar.gif ).each do |f|
     get "#{git_path}/vendor/assets/images/jquery_upload/#{f}" ,"vendor/assets/images/jquery_upload/#{f}"
@@ -417,15 +494,19 @@ end
 
 
 
+# ####################
 # 
-# Run Generators
+#    Run Generators
 # 
+# ####################
 
 # -rspec
+# 
 generate 'rspec:install'
 
 
 # -sorcery
+# 
 generate 'sorcery:install' if options[:auth]
 
 
@@ -438,11 +519,17 @@ generate 'sorcery:install' if options[:auth]
 
 
 
+# ####################
 # 
-# Modify Files
+#     Modify Files
 # 
-
+# ####################
 # TODO modify files
+
+# -application.rb
+# 
+insert_into_file
+
 # application.rb (precompile, railties, time-zone, autoload_paths(lib)), development.rb (letter_opener), production.rb (email, precompile)
 # routes (root|admin), rack-pjax, pjax (js), inherited resources, wysihtml5, jquery_upload
 # FUTURE rspec_config
@@ -462,14 +549,19 @@ generate 'sorcery:install' if options[:auth]
 
 
 
+# ####################
 # 
-# Wrap Up
+#       Wrap Up
 # 
+# ####################
 
 # -git
-git :init
-git :add => '.'
-git :commit => '-am "init commit"'
+# 
+# TODO enable git
+# git :init
+# git :add => '.'
+# git :commit => '-am "init commit"'
 
 # -message
+# 
 say "\r\n\r\nBe sure to set up your database config – either config/mongoid.yml or config/database.yml\r\n\r\n"
