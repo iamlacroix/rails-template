@@ -46,7 +46,7 @@ Flyby::Application.configure do
 	# config.action_controller.asset_host = "http://assets.example.com"
 
 	# Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-	config.assets.precompile += %w( responsive.js html5 )
+	config.assets.precompile += %w( responsive.js html5.js )
 	# config.assets.precompile += ['responsive.js', 'html5']
 
 	# Disable delivery errors, bad email addresses will be ignored
@@ -67,9 +67,11 @@ Flyby::Application.configure do
 	# config.active_record.auto_explain_threshold_in_seconds = 0.5
 	
 	
-	# Sending Email
+	# 
+	# Sending Email :: Gmail
+	# 
 	config.action_mailer.delivery_method = :smtp
-	config.action_mailer.default_url_options = { :host => "application-name.com" }
+	config.action_mailer.default_url_options = { :host => "application-name.com" } # TODO replace with proper domain
 	config.action_mailer.smtp_settings = {
 		:address                 => "smtp.gmail.com",
 		:port                    => 587,
@@ -79,10 +81,28 @@ Flyby::Application.configure do
 		:authentication          => 'plain',
 		:enable_starttls_auto    => true  }
 	
+
+	# 
+	# Sending Email :: SendGrid
+	# 
+	config.action_mailer.delivery_method = :smtp
+	config.action_mailer.default_url_options = { :host => "application-name.com" } # TODO replace with proper domain
+	config.action_mailer.smtp_settings = {
+    :address        => 'smtp.sendgrid.net',
+    :port           => '587',
+    :authentication => :plain,
+    :user_name      => ENV['SENDGRID_USERNAME'],
+    :password       => ENV['SENDGRID_PASSWORD'],
+    :domain         => 'heroku.com' # TODO replace with proper domain
+  }
+	
+
+	# 
 	# Exceptions
+	# 
 	config.middleware.use ExceptionNotifier,
 		:email_prefix         => "[ERROR] ",
-		:sender_address       => %{"Error - Application Name" <errors@lacroixdesign.net>},
+		:sender_address       => %{"Error - Application Name" <errors@lacroixdesign.net>}, # TODO replace with application name
 		:exception_recipients => %w{michael@lacroixdesign.net}
 	
 	

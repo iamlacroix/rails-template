@@ -1,14 +1,14 @@
-- if flash
+- unless flash.blank?
 	
 	.row.alerts
 		
 		- if flash[:alert]
 			.alert.alert-error.fade.in
-				%a.close data-dismiss="alert" ×
+				%a.close{ data: {dismiss: "alert"} } ×
 				= flash.alert
 
 
 		- if flash[:notice]
 			.alert.alert-success.fade.in
-				%a.close data-dismiss="alert" ×
+				%a.close{ data: {dismiss: "alert"} } ×
 				= flash.notice

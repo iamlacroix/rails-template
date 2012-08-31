@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui.min
+//= require jquery.ui.touch-punch.min
 //= require lacroixdesign
 //= require jquery.placeholder
 //= require all
