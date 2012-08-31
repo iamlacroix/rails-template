@@ -1,0 +1,57 @@
+= form_for [:admin, Image.new], url: { controller: 'admin/images', action: 'batch_process' }, html: { multipart: true, id: "fileupload", class: 'form image-uploader' } do |f|
+
+	%p
+		Drag &amp; drop photos anywhere on the page to upload, or click the
+		%em
+			add
+		button.
+		%br
+		%em
+			Not all browsers are supported. If you are having issues, use the
+			= link_to 'single upload', new_admin_image_path
+			feature instead.
+
+
+	.row-fluid
+		.span12
+			.fileupload-buttonbar
+
+				.row-fluid
+					.span8
+						%span.btn.btn-info.fileinput-button
+							%i.icon-plus
+							Add Photos
+							= f.file_field :image, multiple: true
+
+						%button.btn.btn-success.start{ type: 'submit' }
+							%i.icon-arrow-up
+							Start Upload
+
+						%button.btn.cancel.start{ type: 'reset' }
+							%i.icon-ban-circle
+							Cancel Upload
+
+						.loading-bar
+							%div
+								= image_tag 'loading.gif'
+
+					%hr.visible-phone
+
+					.span4
+						%input.toggle.toggle-all{ type: 'checkbox' }
+
+						%button.btn.danger.delete{ type: 'button' }
+							%i.icon-trash
+							Delete Selected
+
+
+
+
+
+	.row-fluid.file-list
+		%div
+			%table.table
+				%tbody.files
+
+
+= render 'admin/shared/image_script.html.erb'

@@ -1,11 +1,11 @@
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 options = {}
+git_path = "https://github.com/iamlacroix/rails-template/raw/master"
 
 puts "\r\n\r\n"
 puts "#########################"
 puts "## Application Options ##"
 puts "#########################"
-# puts "\r\n"
 
 
 
@@ -76,14 +76,6 @@ end
 
 eos
 append_to_file 'Gemfile', gems_dev
-
-# gem 'quiet_assets',         group: :development
-# gem 'letter_opener',        group: :development
-# gem 'thin',                 group: :development
-# gem 'bullet',               group: :development
-# gem 'awesome_print',        group: :development
-# gem 'hirb',                 group: :development
-# gem 'rails_best_practices', group: :development
 
 
 
@@ -160,12 +152,14 @@ case options[:db]
 when "2"
   gem "bson_ext"
   gem "mongoid"
+  options[:mongodb]
 
 # -PostgreSQL [default]
 else
   gem 'pg',        group: :production
   gem 'sqlite3',   group: :development
   gem 'rails-erd', group: :development
+  options[:postgres]
 end
 
 
@@ -177,14 +171,17 @@ case options[:server]
 # -Puma
 when "2"
   gem 'puma'
+  options[:puma]
 
 # -Thin
 when "3"
   gem 'thin'
+  options[:thin]
 
 # -Unicorn [default]
 else
   gem 'unicorn'
+  options[:unicorn]
 end
 
 
@@ -196,12 +193,12 @@ case options[:deployment]
   # -Capistrano
   when "1"
     gem 'capistrano'
-    capistrano = true
-    # TODO fetch capistrano config+recipes in the following section
+    options[:capistrano] = true
 
   # -Heroku [default]
   else
     gem 'newrelic_rpm'
+    options[:heroku]
 end
 
 
@@ -218,20 +215,170 @@ end
 # Remove & Fetch Files
 # 
 
+# Remove Files
+# 
 run "rm -Rf README public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/*"
 
-# TODO remove files
+
+# --------------------------
+
+
+# Vendor Assets
 # 
 
+# -vendor/fonts
+%w( fontawesome-webfont.eot fontawesome-webfont.svg fontawesome-webfont.ttf fontawesome-webfont.woff ).each do |f|
+  get "#{git_path}/vendor/assets/fonts/#{f}" ,"vendor/assets/fonts/#{f}"
+end
 
-# TODO fetch files
+# -vendor/javascripts
+%w( html5shim.js respond.js lacroixdesign.js jquery-ui.min.js jquery.placeholder.js jquery.ui.touch-punch.min.js lacroixdesign.datepicker.js ).each do |f|
+  get "#{git_path}/vendor/assets/javascripts/#{f}" ,"vendor/assets/javascripts/#{f}"
+end
 
-# vendor/assets/fonts/*, vendor/assets/images/*, vendor/assets/javascripts/*, vendor/assets/stylesheets/*
-# app/assets/javascripts/*, app/assets/stylesheets/*, app/views/{layouts|shared}/*, application_helper.rb
-# lib/modules/*, lib/tasks/*, dev_environment.rb, unicorn.rb, newrelic.yml, newrelic.rb (unicorn), mongoid.yml
+# -vendor/stylesheets
+%w( lacroixdesign.css.scss font-awesome.scss lacroixdesign.datepicker.css ).each do |f|
+  get "#{git_path}/vendor/assets/stylesheets/#{f}" ,"vendor/assets/stylesheets/#{f}"
+end
 
-# Capfile, Procfile, Procfile.dev, Procfile.production
-# deploy.rb (cap), config/recipes/*
+
+# --------------------------
+
+
+# App Assets
+# 
+
+# -app/javascripts
+%w( application.js html5.js responsive.js all.js.coffee ).each do |f|
+  get "#{git_path}/app/assets/javascripts/#{f}" ,"app/assets/javascripts/#{f}"
+end
+
+# -app/stylesheets
+%w( application.css.scss all.css.scss ).each do |f|
+  get "#{git_path}/app/assets/stylesheets/#{f}" ,"app/assets/stylesheets/#{f}"
+end
+
+
+# --------------------------
+
+
+# Views
+# 
+
+# -app/helpers
+get "#{git_path}/app/helpers/application_helper.rb" ,"app/helpers/application_helper.rb"
+
+
+# --------------------------
+
+
+# Views
+# 
+
+# -app/views/layout
+get "#{git_path}/app/views/layouts/application.html.haml" ,"app/views/layouts/application.html.haml"
+
+# -app/views/shared
+%w( _flash.html.haml _form_errors.html.haml ).each do |f|
+  get "#{git_path}/app/views/shared/#{f}" ,"app/views/shared/#{f}"
+end
+
+
+# --------------------------
+
+
+# Initializers & Lib
+# 
+
+# -config/initializers
+%w( dev_environment.rb ).each do |f|
+  get "#{git_path}/config/initializers/#{f}" ,"config/initializers/#{f}"
+end
+
+# -lib/modules
+%w( shared_methods.rb ).each do |f|
+  get "#{git_path}/lib/modules/#{f}" ,"lib/modules/#{f}"
+end
+
+
+# --------------------------
+
+
+# Conditional Fetches
+# 
+
+# -heroku
+if options[:heroku]
+  %w( Procfile Procfile.dev Procfile.production ).each do |f|
+    get "#{git_path}/#{f}" ,"#{f}"
+  end
+
+  get "#{git_path}/config/newrelic.yml" ,"config/newrelic.yml"
+
+  if options[:unicorn]
+    get "#{git_path}/config/unicorn.rb" ,"config/unicorn.rb"
+    get "#{git_path}/config/initializers/new_relic.rb" ,"config/initializers/new_relic.rb"
+  end
+end
+
+
+# -capistrano
+if options[:capistrano]
+  get "#{git_path}/Capfile" ,"Capfile"
+  get "#{git_path}/config/deploy.rb" ,"config/deploy.rb"
+
+  %w( base.rb check.rb mongodb.rb nginx.rb nodejs.rb postgresql.rb rbenv.rb redis.rb ruby.rb unicorn.rb utilities.rb ).each do |f|
+    get "#{git_path}/config/recipes/#{f}" ,"config/recipes/#{f}"
+  end
+
+  %w( foreman.erb mongoid.yml.erb nginx_unicorn.erb postgresql.yml.erb unicorn_init.erb unicorn.rb.erb ).each do |f|
+    get "#{git_path}/config/recipes/templates/#{f}" ,"config/recipes/templates/#{f}"
+  end
+
+  if options[:mongodb]
+    get "#{git_path}/config/recipes/mongodb/manage.rb" ,"config/recipes/mongodb/manage.rb"
+  end
+end
+
+
+# -mongodb
+if options[:mongodb]
+  get "#{git_path}/config/mongoid.yml" ,"config/mongoid.yml"
+end
+
+
+# -wysihtml5
+if options[:blog] || options[:cms] || options[:admin]
+  %w( wysihtml5-0.3.0.min.js advanced.js ).each do |f|
+    get "#{git_path}/vendor/assets/javascripts/wysihtml5/#{f}" ,"vendor/assets/javascripts/wysihtml5/#{f}"
+  end
+end
+
+
+# -attachments
+if options[:attachment]
+  %w( load-circle.gif load.gif loading.gif progressbar.gif ).each do |f|
+    get "#{git_path}/vendor/assets/images/jquery_upload/#{f}" ,"vendor/assets/images/jquery_upload/#{f}"
+  end
+
+  %w( jquery.fileupload-ui.js jquery.fileupload.js jquery.iframe-transport.js jquery.ui.widget.js load-image.min.js tmpl.min.js ).each do |f|
+    get "#{git_path}/vendor/assets/javascripts/jquery_upload/#{f}" ,"vendor/assets/javascripts/jquery_upload/#{f}"
+  end
+
+  %w( jquery.fileupload-ui.css.scss ).each do |f|
+    get "#{git_path}/vendor/assets/stylesheets/jquery_upload/#{f}" ,"vendor/assets/stylesheets/jquery_upload/#{f}"
+  end
+
+  %w( _image_script.html.erb _image_uploader.html.haml ).each do |f|
+    get "#{git_path}/app/views/shared/#{f}" ,"app/views/shared/#{f}"
+  end
+
+  get "#{git_path}/app/assets/javascripts/jquery_upload.js.coffee" ,"app/assets/javascripts/jquery_upload.js.coffee"
+end
+
+
+
+# FUTURE lib/tasks/*
 
 
 
@@ -265,9 +412,9 @@ run "rm -Rf README public/index.html app/assets/images/* app/assets/javascripts/
 # 
 
 # TODO modify files
-# application.rb (precompile, railties, time-zone), development.rb (letter_opener), production.rb (email, precompile)
-# rack-pjax, pjax (js), inherited resources
-# TODO [::later::] rspec_config
+# application.rb (precompile, railties, time-zone, autoload_paths(lib)), development.rb (letter_opener), production.rb (email, precompile)
+# rack-pjax, pjax (js), inherited resources, wysihtml5, jquery_upload
+# FUTURE rspec_config
 
 # General
 
@@ -278,14 +425,14 @@ run "rm -Rf README public/index.html app/assets/images/* app/assets/javascripts/
 
 
 
-
+# ========================================================================================================================
 
 
 
 
 
 # 
-# Get additional files
+# Messages
 # 
-# get "https://github.com/iamlacroix/VVVVV/raw/master/gitignore" ,".gitignore"
-# get "https://github.com/iamlacroix/VVVVV/raw/master/build.rake", "lib/tasks/build.rake"
+
+puts "\r\n\r\nBe sure to set up your database config – either config/mongoid.yml or config/database.yml"
