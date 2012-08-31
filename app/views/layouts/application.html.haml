@@ -53,8 +53,6 @@
 			= javascript_include_tag "html5"
 		
 		= stylesheet_link_tag "application", :media => "all"
-		/ - if @is_admin_page
-		/ 	= stylesheet_link_tag "application-admin"
 		= javascript_include_tag "responsive"
 		= csrf_meta_tags
 		
@@ -94,8 +92,6 @@
 		
 		-# Kore ga javascript
 		= javascript_include_tag "application"
-		/ - if @is_admin_page
-		/ 	= javascript_include_tag "application-admin"
 		
 		
 		:javascript

@@ -148,7 +148,7 @@ end
 
 
 
-# Set deployment type   TODO evaluate this later on instead
+# Set deployment type
 # 
 case options[:deployment]
 
@@ -224,7 +224,7 @@ run "bundle install"
 
 # Remove Files
 # 
-run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/*"
+run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/* app/controllers/*"
 
 
 # --------------------------
@@ -306,6 +306,26 @@ end
 %w( shared_methods.rb ).each do |f|
   get "#{git_path}/lib/modules/#{f}" ,"lib/modules/#{f}"
 end
+
+
+# --------------------------
+
+
+# Controllers
+# 
+
+# -home
+%w( application_controller.rb home_controller.rb ).each do |f|
+  get "#{git_path}/app/controllers/#{f}" ,"app/controllers/#{f}"
+end
+
+# -admin
+if options[:admin]
+  %w( application_controller.rb home_controller.rb ).each do |f|
+    get "#{git_path}/app/controllers/admin/#{f}" ,"app/controllers/admin/#{f}"
+  end
+end
+
 
 
 # --------------------------
@@ -404,11 +424,6 @@ end
 # -rspec
 generate 'rspec:install'
 
-# -home controller
-generate 'controller home'
-
-# -admin
-generate 'controller admin/home' if options[:admin]
 
 # -sorcery
 generate 'sorcery:install' if options[:auth]
@@ -448,7 +463,13 @@ generate 'sorcery:install' if options[:auth]
 
 
 # 
-# Messages
+# Wrap Up
 # 
 
+# -git
+git :init
+git :add => '.'
+git :commit => '-am "init commit"'
+
+# -message
 say "\r\n\r\nBe sure to set up your database config – either config/mongoid.yml or config/database.yml\r\n\r\n"
