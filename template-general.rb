@@ -92,9 +92,6 @@ eos
 append_to_file 'Gemfile', gems_test
 gem 'rspec-rails',      group: [ :development, :test ]
 
-# gem "capybara",         group: :test
-# gem 'shoulda-matchers', group: :test
-
 
 
 # Gems :: Global
@@ -117,14 +114,14 @@ case options[:db]
 when "2"
   gem "bson_ext"
   gem "mongoid"
-  options[:mongodb]
+  options[:mongodb] = true
 
 # -PostgreSQL [default]
 else
   gem 'pg',        group: :production
   gem 'sqlite3',   group: :development
   gem 'rails-erd', group: :development
-  options[:postgres]
+  options[:postgres] = true
 end
 
 
@@ -136,17 +133,17 @@ case options[:server]
 # -Puma
 when "2"
   gem 'puma'
-  options[:puma]
+  options[:puma] = true
 
 # -Thin
 when "3"
   gem 'thin'
-  options[:thin]
+  options[:thin] = true
 
 # -Unicorn [default]
 else
   gem 'unicorn'
-  options[:unicorn]
+  options[:unicorn] = true
 end
 
 
@@ -164,7 +161,7 @@ case options[:deployment]
   else
     gem 'dalli'
     gem 'newrelic_rpm'
-    options[:heroku]
+    options[:heroku] = true
 end
 
 
@@ -209,6 +206,10 @@ gem 'will_paginate' if (options[:admin] || options[:blog])
 
 
 
+run "bundle install"
+
+
+
 
 
 # ========================================================================================================================
@@ -223,7 +224,7 @@ gem 'will_paginate' if (options[:admin] || options[:blog])
 
 # Remove Files
 # 
-run "rm -Rf README public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/*"
+run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/*"
 
 
 # --------------------------
@@ -450,4 +451,4 @@ generate 'sorcery:install' if options[:auth]
 # Messages
 # 
 
-puts "\r\n\r\nBe sure to set up your database config – either config/mongoid.yml or config/database.yml"
+say "\r\n\r\nBe sure to set up your database config – either config/mongoid.yml or config/database.yml\r\n\r\n"
