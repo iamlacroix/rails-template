@@ -100,45 +100,10 @@ gem 'rspec-rails',      group: [ :development, :test ]
 # Gems :: Global
 #
 gem 'foreman'
-gem 'dalli'
 gem 'exception_notification'
 gem 'haml-rails'
 gem 'bourbon'
 gem 'rack-pjax'
-
-
-# --------------------------
-
-
-# Authentication?
-gem 'sorcery' if options[:auth]
-
-
-# Admin?
-gem 'inherited_resources' if options[:admin]
-
-
-# Attachments?
-if options[:attachment]
-  gem 'aws-sdk'
-  gem 'paperclip'
-end
-
-
-# Blog?
-gem 'truncate_html' if options[:blog]
-
-
-# CMS?
-gem 'ancestry' if options[:cms]
-
-
-# CMS? || Blog?
-gem 'friendly_id' if (options[:cms] || options[:blog])
-
-
-# Admin? || Blog?
-gem 'will_paginate' if (options[:admin] || options[:blog])
 
 
 # --------------------------
@@ -197,9 +162,50 @@ case options[:deployment]
 
   # -Heroku [default]
   else
+    gem 'dalli'
     gem 'newrelic_rpm'
     options[:heroku]
 end
+
+
+# --------------------------
+
+
+# Authentication?
+gem 'sorcery' if options[:auth]
+
+
+# Admin?
+gem 'inherited_resources' if options[:admin]
+
+
+# Attachments?
+if options[:attachment]
+  gem 'aws-sdk'
+  gem 'paperclip'
+end
+
+
+# Blog?
+gem 'truncate_html' if options[:blog]
+
+
+# CMS?
+if options[:cms]
+  if options[:mongodb]
+    gem 'mongoid-ancestry'
+  else
+    gem 'ancestry'
+  end
+end
+
+
+# CMS? || Blog?
+gem 'friendly_id' if (options[:cms] || options[:blog])
+
+
+# Admin? || Blog?
+gem 'will_paginate' if (options[:admin] || options[:blog])
 
 
 
@@ -394,8 +400,17 @@ end
 # Run Generators
 # 
 
-# TODO run generators
-# controller home, sorcery:install, controller admin/home, rspec:install
+# -rspec
+generate 'rspec:install'
+
+# -home controller
+generate 'controller home'
+
+# -admin
+generate 'controller admin/home' if options[:admin]
+
+# -sorcery
+generate 'sorcery:install' if options[:auth]
 
 
 
@@ -413,7 +428,7 @@ end
 
 # TODO modify files
 # application.rb (precompile, railties, time-zone, autoload_paths(lib)), development.rb (letter_opener), production.rb (email, precompile)
-# rack-pjax, pjax (js), inherited resources, wysihtml5, jquery_upload
+# routes (root|admin), rack-pjax, pjax (js), inherited resources, wysihtml5, jquery_upload
 # FUTURE rspec_config
 
 # General
