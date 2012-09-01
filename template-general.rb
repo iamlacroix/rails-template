@@ -2,6 +2,18 @@ OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 options = {}
 git_path = "https://github.com/iamlacroix/rails-template/raw/master"
 
+# Output green text on dark-grey background
+# 
+def success_output(content)
+  puts "\e[32m\e[40m#{content}\e[0m"
+end
+
+# Output yellow text on dark-grey background
+# 
+def info_output(content)
+  puts "\e[33m\e[40m#{content}\e[0m"
+end
+
 
 
 
@@ -12,32 +24,35 @@ git_path = "https://github.com/iamlacroix/rails-template/raw/master"
 # ####################
 
 
+# Purple on dark-grey
+# 
 def logo_output(content)
-  puts "\e[30m#{content}\e[0m"
-end
-
-def title_output(content)
   puts "\e[37m\e[40m#{content}\e[0m"
 end
 
+# White on dark-grey
+# 
+def title_output(content)
+  puts "\e[35m\e[40m#{content}\e[0m"
+end
 
+
+# Display logo
+# 
 puts "\r\n\r\n\r\n\r\n"
-title_output "       ~ LaCroix Design Co. ~       "
-
-
-puts "\r\n"
-logo_output "                                    "
-logo_output "        ///   ///     ..=====..     "
-logo_output "       ///   ///   .:ooooooooooo:.  "
-logo_output "      ///   ///   .ooooooooooooooo. "
-logo_output "     ///   ///   -ooooooooooooooooo-"
-logo_output "    ///   ///    -ooooooooooooooooo-"
-logo_output "   ///   ///     -ooooooooooooooooo-"
-logo_output "  ///   ///       `ooooooooooooooo' "
-logo_output " ///   ///         `:ooooooooooo:'  "
-logo_output "///   ///             ''=====''     "
-logo_output "                                    "
-# puts "\r\n"
+logo_output  "                                      "
+title_output " -------- LaCroix Design Co. -------- "
+logo_output  "                                      "
+logo_output  "         ///   ///     ..=====..      "
+logo_output  "        ///   ///   .:ooooooooooo:.   "
+logo_output  "       ///   ///   .ooooooooooooooo.  "
+logo_output  "      ///   ///   -ooooooooooooooooo- "
+logo_output  "     ///   ///    -ooooooooooooooooo- "
+logo_output  "    ///   ///     -ooooooooooooooooo- "
+logo_output  "   ///   ///       `ooooooooooooooo'  "
+logo_output  "  ///   ///         `:ooooooooooo:'   "
+logo_output  " ///   ///             ''=====''      "
+logo_output  "                                      "
 
 
 
@@ -103,12 +118,11 @@ options[:cms] = generate_question "Will this app have a CMS feature? (installs '
 
 # #########################
 # 
-#   Begin Initialization
+#    Setup/Install Gems
 # 
 # #########################
 
-# comment_lines 'Gemfile', /sqlite3/
-
+gsub_file 'Gemfile', /^gem 'sqlite3'$/, ''
 
 # Gems :: Development
 # 
@@ -277,7 +291,7 @@ run "bundle install"
 # 
 # Remove Files
 # 
-run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/* app/controllers/*"
+run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/* app/controllers/* test/"
 
 
 # --------------------------
@@ -398,7 +412,6 @@ if options[:admin]
 end
 
 
-
 # --------------------------
 
 
@@ -409,7 +422,7 @@ end
 # -heroku
 # 
 if options[:heroku]
-  %w( Procfile Procfile.dev Procfile.production ).each do |f|
+  %w( Procfile ).each do |f|
     get "#{git_path}/#{f}" ,"#{f}"
   end
 
@@ -439,13 +452,6 @@ if options[:capistrano]
   if options[:mongodb]
     get "#{git_path}/config/recipes/mongodb/manage.rb" ,"config/recipes/mongodb/manage.rb"
   end
-end
-
-
-# -mongodb
-# 
-if options[:mongodb]
-  get "#{git_path}/config/mongoid.yml" ,"config/mongoid.yml"
 end
 
 
@@ -481,9 +487,10 @@ if options[:attachment]
 end
 
 
+# --------------------------
+
 
 # FUTURE lib/tasks/*
-
 
 
 
@@ -499,6 +506,11 @@ end
 #    Run Generators
 # 
 # ####################
+
+# -mongodb
+# 
+generate 'mongoid:config'
+
 
 # -rspec
 # 
@@ -524,21 +536,244 @@ generate 'sorcery:install' if options[:auth]
 #     Modify Files
 # 
 # ####################
-# TODO modify files
 
-# -application.rb
+
+##
+# application.rb
+##
+
+
+# -load paths
 # 
-insert_into_file
-
-# application.rb (precompile, railties, time-zone, autoload_paths(lib)), development.rb (letter_opener), production.rb (email, precompile)
-# routes (root|admin), rack-pjax, pjax (js), inherited resources, wysihtml5, jquery_upload
-# FUTURE rspec_config
-
-# General
+gsub_file 'config/application.rb', /# config.autoload_paths.+/, 'config.autoload_paths += %W( #{config.root}/lib/modules )'
 
 
-# MongoDB
+# -time zone
+# 
+gsub_file 'config/application.rb', /# config.time_zone = '.+'/, "config.time_zone = 'Central Time (US & Canada)'"
 
+
+# -PJAX
+# 
+inject_into_file 'config/application.rb', before: "  end\nend" do
+  <<-eos
+    \r
+    # PJAX
+    # 
+    config.middleware.use Rack::Pjax
+  eos
+end
+
+
+# -heroku: asset compiler fix
+# 
+if options[:heroku]
+  inject_into_file 'config/application.rb', before: "  end\nend" do
+    <<-eos
+    \r
+    # Enable compiling assets on deploy for Heroku
+    config.assets.initialize_on_precompile = false
+    eos
+  end
+end
+
+
+# -mongodb: disable Active Record
+# 
+if options[:mongodb]
+  gsub_file 'config/application.rb', /require 'rails\/all'/ do
+    <<-eos
+require "action_controller/railtie"
+require "action_mailer/railtie"
+require "active_resource/railtie"
+require "sprockets/railtie"
+require "rails/test_unit/railtie"
+    eos
+  end
+end
+
+
+# --------------------------
+
+
+##
+# development.rb
+##
+
+# -letter_opener
+# 
+inject_into_file 'config/environments/development.rb', after: /^.*::Application.configure do/ do
+  <<-eos
+  \n
+  # 
+  # Open emails in browser
+  # 
+  config.action_mailer.delivery_method = :letter_opener
+  # config.action_mailer.default_url_options = { host: "localhost:3000" }  # FIXME replace with correct :host
+  eos
+end
+
+
+# --------------------------
+
+
+##
+# production.rb
+##
+
+# -precompile files
+# 
+gsub_file 'config/environments/production.rb', /# config.assets.precompile.*/, 'config.assets.precompile += %w( responsive.js html5.js )'
+
+
+# -email settings
+# 
+inject_into_file 'config/environments/production.rb', after: /^.*::Application.configure do/ do
+  <<-eos
+  \n
+  # 
+  # Sending Email :: SendGrid
+  # 
+  # config.action_mailer.default_url_options = { host: "EXAMPLE.COM" }  # FIXME replace with proper :host
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address        => 'smtp.sendgrid.net',
+    :port           => '587',
+    :authentication => :plain,
+    :user_name      => ENV['SENDGRID_USERNAME'],
+    :password       => ENV['SENDGRID_PASSWORD'],
+    :domain         => 'heroku.com'  # FIXME replace with proper :domain
+  }
+  eos
+end
+
+
+# --------------------------
+
+
+##
+# routes.rb
+##
+
+# -home route
+#
+inject_into_file 'config/routes.rb', after: /^.*::Application.routes.draw do/ do
+  <<-eos
+  \n
+  root to: 'home#index'
+  eos
+end
+
+
+# -admin route
+# 
+if options[:admin]
+  inject_into_file 'config/routes.rb', after: /^.*::Application.routes.draw do/ do
+    <<-eos
+    \n
+    # Admin
+    # 
+    namespace :admin do
+      root to: 'home#index'
+    end
+    eos
+  end
+end
+
+
+# --------------------------
+
+
+##
+# PJAX
+##
+
+# -all.js.coffee
+#
+inject_into_file 'app/assets/javascripts/all.js.coffee', after: /\$\(document\)\.ready ->/ do
+  <<-eos
+\n
+\t# ===== PJAX =====
+\t# 
+\t$('a:not([data-remote]):not([data-behavior]):not([data-skip-pjax])').pjax
+\t\tcontainer: '[data-pjax-container]'
+\t\ttimeout:   1500
+eos
+end
+
+
+# --------------------------
+
+
+##
+# application.js
+##
+
+# -wysihtml5
+#
+if options[:blog] || options[:cms] || options[:admin]
+  inject_into_file 'app/assets/javascripts/application.js', after: /\/\/= require jquery_ujs/ do
+    "\r//= require wysihtml5/advanced\r//= require wysihtml5/wysihtml5-0.3.0.min"
+  end
+end
+
+
+# -jquery_upload
+#
+if options[:attachment]
+  inject_into_file 'app/assets/javascripts/application.js', after: /\/\/= require jquery_ujs/ do
+    "\r//= require jquery_upload/jquery.ui.widget\r//= require jquery_upload/tmpl.min\r//= require jquery_upload/load-image.min\r//= require jquery_upload/jquery.fileupload\r//= require jquery_upload/jquery.fileupload-ui\r//= require jquery_upload/jquery.iframe-transport"
+  end
+end
+
+
+# --------------------------
+
+
+##
+# RSpec
+##
+
+# -capybara
+#
+inject_into_file 'spec/spec_helper.rb', after: /require 'rspec\/autorun'/ do
+  "\rrequire 'capybara/rspec'"
+end
+
+
+# -remove fixtures
+#
+gsub_file 'spec/spec_helper.rb', 'config.fixture_path = "#{::Rails.root}/spec/fixtures"', '# config.fixture_path = "#{::Rails.root}/spec/fixtures"'
+
+
+# -paperclip shoulda matchers
+# 
+if options[:attachment]
+  inject_into_file 'spec/spec_helper.rb', after: /require 'rspec\/autorun'/ do
+    "\rrequire 'paperclip/matchers'"
+  end
+  inject_into_file 'spec/spec_helper.rb', after: /RSpec\.configure do \|config\|/ do
+    "\r  config.include Paperclip::Shoulda::Matchers"
+  end
+end
+
+
+# --------------------------
+
+
+##
+# git
+##
+
+# -update .gitignore w/ env var file & .powder
+# 
+inject_into_file '.gitignore', after: /\/tmp/ do
+  <<-eos
+\n
+config/initializers/dev_environment.rb
+.powder
+  eos
+end
 
 
 
@@ -555,13 +790,17 @@ insert_into_file
 # 
 # ####################
 
-# -git
+# git
 # 
-# TODO enable git
-# git :init
-# git :add => '.'
-# git :commit => '-am "init commit"'
+git :init
+git :add => '.'
+git :commit => '-am "init"'
 
-# -message
+
+# -exit message
 # 
-say "\r\n\r\nBe sure to set up your database config – either config/mongoid.yml or config/database.yml\r\n\r\n"
+puts "\r\n\r\n"
+info_output "Be sure to set up your database config – either config/mongoid.yml or config/database.yml"
+puts "\r\n"
+success_output "All set!"
+puts "\r\n"

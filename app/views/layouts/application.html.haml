@@ -77,7 +77,7 @@
 			
 			
 			
-			.container-fluid.main
+			.container-fluid.body{ data: { 'pjax-container' => true } }
 				!= render 'shared/flash', { :flash => flash }
 				= yield
 		
