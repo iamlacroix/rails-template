@@ -314,7 +314,7 @@ end
 
 # -vendor/javascripts
 # 
-%w( html5shim.js respond.js lacroixdesign.js jquery-ui.min.js jquery.placeholder.js jquery.ui.touch-punch.min.js lacroixdesign.datepicker.js ).each do |f|
+%w( html5shim.js respond.js lacroixdesign.js jquery-ui.min.js jquery.placeholder.min.js jquery.ui.touch-punch.min.js lacroixdesign.datepicker.js ).each do |f|
   get "#{git_path}/vendor/assets/javascripts/#{f}" ,"vendor/assets/javascripts/#{f}"
 end
 
