@@ -150,6 +150,7 @@ gems_test = <<-eos
 group :test do
   gem "capybara"
   gem 'shoulda-matchers'
+  gem 'factory_girl_rails'
 end
 
 eos
@@ -292,6 +293,10 @@ run "bundle install"
 # Remove Files
 # 
 run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/* app/controllers/* test/"
+
+if options[:mongodb]
+  run "rm -Rf config/database.yml"
+end
 
 
 # --------------------------

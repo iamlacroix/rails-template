@@ -16,6 +16,6 @@
 //= require jquery.ui.touch-punch.min
 //= require jquery.pjax
 //= require lacroixdesign
-//= require jquery.placeholder
+//= require jquery.placeholder.min
 //= require all
 //= require_self
