@@ -15,7 +15,7 @@ OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE  # FIXME is this necessary
 
 # Set base for git and template file's directory
 # 
-git_base        = "https://github.com/iamlacroix/rails-template/raw/components"
+git_base        = "https://github.com/iamlacroix/rails-template/raw/master"
 dir_base        = File.expand_path(File.dirname(__FILE__))
 component_dir   = 'components'
 resources_dir   = 'resources'
