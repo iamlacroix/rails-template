@@ -1,4 +1,4 @@
-module FormattingHelper
+module ApplicationHelper
 	
 	# 
 	# Yes -or- No
