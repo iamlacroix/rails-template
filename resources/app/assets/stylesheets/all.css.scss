@@ -51,6 +51,27 @@ $type-serif: Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 
+// --- Media Queries ---
+// 
+@mixin tablet{
+    @media screen and (min-width: 768px) {
+      @content;
+    }
+}
+
+@mixin desktop{
+    @media screen and (min-width: 960px) {
+      @content;
+    }
+}
+
+@mixin retina{
+    @media only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5){
+      @content;
+    }
+}
+
+
 
 
 
@@ -68,7 +89,7 @@ html body{
 body{
 	font-family: $type-sans;
 	font-size: 100%; /* 16px = 100% */
-	padding: 5px 0 0 0;
+	padding: 0;
 	margin: 0;
 	font-weight: normal;
 	line-height: 1.2;
@@ -186,77 +207,3 @@ strong{
 // *** Footer ************
 // ***********************
 .footer.container-fluid{}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// =====================================================================
-// Tablet Style
-// =====================================================================
-@media screen and (min-width: 768px) {
-	
-	
-	// *** General ***********
-	// ***********************
-	
-
-	
-	
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// =====================================================================
-// Desktop & Tablet [Landscape] Style
-// =====================================================================
-// Was 1024px
-@media screen and (min-width: 960px) {
-	
-	
-	// *** General ************
-	// ************************
-
-
-
-}

@@ -1,125 +1,125 @@
 !!! 5
-	
+  
 %html
 
-	/ 
-		_
-		_
-		_          ///   ///     ..=====..
-		_         ///   ///   .:ooooooooooo:.
-		_        ///   ///   .ooooooooooooooo.
-		_       ///   ///   -ooooooooooooooooo-
-		_      ///   ///    -ooooooooooooooooo-
-		_     ///   ///     -ooooooooooooooooo-
-		_    ///   ///       `ooooooooooooooo'
-		_   ///   ///         `:ooooooooooo:'
-		_  ///   ///             ''=====''
-		_  
-		_  Designed & Developed by LaCroix Design Co.
-		_    http://lacroixdesign.net
-		_  
-		_  
-		_
-	
-	%head
-		%meta(charset="utf-8")
-		%title
-			!= ((@page_title || []) << 'TODO: APPLICATION NAME').reject(&:blank?).map {|n| h(n)}.join(' | ')
-		
-		-# Kore ga general meta
-		%meta{name: "description", content: "TODO: APPLICATION NAME"}
-		%meta{name: "author", content: "Michael LaCroix, James LaCroix"}
-		%meta{:'http-equiv' => "X-UA-Compatible", content: "chrome=1"}
+  / 
+    _
+    _
+    _          ///   ///     ..=====..
+    _         ///   ///   .:ooooooooooo:.
+    _        ///   ///   .ooooooooooooooo.
+    _       ///   ///   -ooooooooooooooooo-
+    _      ///   ///    -ooooooooooooooooo-
+    _     ///   ///     -ooooooooooooooooo-
+    _    ///   ///       `ooooooooooooooo'
+    _   ///   ///         `:ooooooooooo:'
+    _  ///   ///             ''=====''
+    _  
+    _  Designed & Developed by LaCroix Design Co.
+    _    http://lacroixdesign.net
+    _  
+    _  
+    _
+  
+  %head
+    %meta(charset="utf-8")
+    %title
+      != ((@page_title || []) << 'TODO: APPLICATION NAME').reject(&:blank?).map {|n| h(n)}.join(' | ')
+    
+    -# Kore ga general meta
+    %meta{name: "description", content: "TODO: APPLICATION NAME"}
+    %meta{name: "author", content: "Michael LaCroix, James LaCroix"}
+    %meta{:'http-equiv' => "X-UA-Compatible", content: "chrome=1"}
 
-		-# Kore ga Facebook meta
-		/ %meta{name: "og:title", content: "#{@fb_title || 'TODO: APPLICATION NAME'}"}
-		/ %meta{name: "og:image", content: site_logo}
-		/ %meta{name: "og:type", content: "website"}
-		/ %meta{name: "og:site_name", content: "TODO: APPLICATION NAME"}
-		/ %meta{name: "og:admins", content: "39114270"}
-		
-		-# Kore ga fav and touch icons, iOS meta
-		%link{rel: "shortcut icon", href: "/favicon.ico"}
-		/ %link{rel: "apple-touch-icon", href: "#{asset_path 'icons/apple-touch-icon_57.png'}"}
-		/ %link{rel: "apple-touch-icon-precomposed", sizes: "72x72", href: "#{asset_path 'icons/apple-touch-icon_72.png'}"}
-		/ %link{rel: "apple-touch-icon-precomposed", sizes: "114x114", href: "#{asset_path 'icons/apple-touch-icon_114.png'}"}
-		/ %link{rel: "apple-touch-icon-precomposed", sizes: "144x144", href: "#{asset_path 'icons/apple-touch-icon_144.png'}"}
-		%meta{name: "viewport", content: "initial-scale=1.0, width=device-width, user-scalable=no, maximum-scale=1.0"}
-		%meta{name: "apple-mobile-web-app-capable", content: "yes"}
-		%meta{name: "apple-mobile-web-app-status-bar-style", content:"black"}
+    -# Kore ga Facebook meta
+    / %meta{name: "og:title", content: "#{@fb_title || 'TODO: APPLICATION NAME'}"}
+    / %meta{name: "og:image", content: site_logo}
+    / %meta{name: "og:type", content: "website"}
+    / %meta{name: "og:site_name", content: "TODO: APPLICATION NAME"}
+    / %meta{name: "og:admins", content: "39114270"}
+    
+    -# Kore ga fav and touch icons, iOS meta
+    %link{rel: "shortcut icon", href: "/favicon.ico"}
+    / %link{rel: "apple-touch-icon", href: "#{asset_path 'icons/apple-touch-icon_57.png'}"}
+    / %link{rel: "apple-touch-icon-precomposed", sizes: "72x72", href: "#{asset_path 'icons/apple-touch-icon_72.png'}"}
+    / %link{rel: "apple-touch-icon-precomposed", sizes: "114x114", href: "#{asset_path 'icons/apple-touch-icon_114.png'}"}
+    / %link{rel: "apple-touch-icon-precomposed", sizes: "144x144", href: "#{asset_path 'icons/apple-touch-icon_144.png'}"}
+    %meta{name: "viewport", content: "initial-scale=1.0, width=device-width, user-scalable=no, maximum-scale=1.0"}
+    %meta{name: "apple-mobile-web-app-capable", content: "yes"}
+    %meta{name: "apple-mobile-web-app-status-bar-style", content:"black"}
 
-		-# Kore ga HTML5 shim, for IE6-8 support of HTML elements
-		/[if lt IE 9]
-			= javascript_include_tag "html5"
-		
-		= stylesheet_link_tag "application", :media => "all"
-		= javascript_include_tag "responsive"
-		= csrf_meta_tags
-		
-		-# Kore ga Typekit
-		/ %script{ type: "text/javascript", src: "//use.typekit.net/VVVVVVV.js" }
-		/ 	:javascript
-		/ 		try{Typekit.load();}catch(e){}
-			
-		-# Kore ga Google Maps
-		-# - if @google_maps
-		-# 	script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"
-		-# 	/ script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&amp;sensor=true"
-	
-	
-	
-	
-	%body(onload="setTimeout(function() { window.scrollTo(0, 1) }, 100);")
-		.container-fluid.wrap
-			.container-fluid.header
-				.row-fluid
+    -# Kore ga HTML5 shim, for IE6-8 support of HTML elements
+    /[if lt IE 9]
+      = javascript_include_tag "html5"
+    
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "responsive"
+    = csrf_meta_tags
+    
+    -# Kore ga Typekit
+    / %script{ type: "text/javascript", src: "//use.typekit.net/VVVVVVV.js" }
+    / :javascript
+    /   try{Typekit.load();}catch(e){}
+      
+    -# Kore ga Google Maps
+    -# - if @google_maps
+    -#  script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"
+    -#  / script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&amp;sensor=true"
+  
+  
+  
+  
+  %body(onload="setTimeout(function() { window.scrollTo(0, 1) }, 100);")
+    .container-fluid.wrap
+      .container-fluid.header
+        .row-fluid
 
-			
-			
-			
-			.container-fluid.body{ data: { 'pjax-container' => true } }
-				!= render 'shared/flash', { :flash => flash }
-				= yield
-		
-		
-		
-		
-		
+      
+      
+      
+      .container-fluid.body{ data: { 'pjax-container' => true } }
+        != render 'shared/flash', { :flash => flash }
+        = yield
+    
+    
+    
+    
+    
 
-		
-		
-		
-		
-		-# Kore ga javascript
-		= javascript_include_tag "application"
-		
-		
-		:javascript
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-VVVVVVVV-1']);
-			_gaq.push(['_trackPageview']);
-			
-			(function() {
-				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
-
-
-
-
-		-# Kore ga Google Chrome Frame prompt for IE
-		/[if lt IE 8]
-			%script{ type: "text/javascript", src: "http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" }
-			:javascript
-				CFInstall.check({ mode: "overlay" });
+    
+    
+    
+    
+    -# Kore ga javascript
+    = javascript_include_tag "application"
+    
+    
+    :javascript
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-VVVVVVVV-1']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
 
 
 
-		
-		
-		-# Kore ga Dev Width Plugin
-		- if Rails.env.development?
-			#dev-browserwidth{style: "position:fixed; bottom:0; left:0; background:#555; color:#CCC; font-size:0.75em; padding:0.25em; text-shadow:black 1px 1px 1px; font-weight:normal;"}
-			:javascript
-				function showWidth(){var w = $(window).width();$('#dev-browserwidth').text(w);}showWidth();$(window).resize(function(){showWidth();});
+
+    -# Kore ga Google Chrome Frame prompt for IE
+    /[if lt IE 8]
+      %script{ type: "text/javascript", src: "http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" }
+      :javascript
+        CFInstall.check({ mode: "overlay" });
+
+
+
+    
+    
+    -# Kore ga Dev Width Plugin
+    - if Rails.env.development?
+      #dev-browserwidth{style: "position:fixed; bottom:0; left:0; background:#555; color:#CCC; font-size:0.75em; padding:0.25em; text-shadow:black 1px 1px 1px; font-weight:normal;"}
+      :javascript
+        function showWidth(){var w = $(window).width();$('#dev-browserwidth').text(w);}showWidth();$(window).resize(function(){showWidth();});
