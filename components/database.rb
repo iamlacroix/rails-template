@@ -41,7 +41,7 @@ case @options[:db]
 
     # Gems
     # 
-    gem "bson_ext"
+    gem "bson_ext" unless @options[:platform] == :jruby
     gem "mongoid"
     run 'bundle install'
 
@@ -73,9 +73,13 @@ case @options[:db]
 
     # Gems
     # 
-    gem 'pg',        group: :production
-    gem 'sqlite3',   group: :development
-    gem 'rails-erd', group: :development
+    if @options[:platform] == :jruby
+      gem 'activerecord-jdbcpostgresql-adapter', group: :production
+    else
+      gem 'pg',        group: :production
+      gem 'sqlite3',   group: :development
+      gem 'rails-erd', group: :development
+    end
     run 'bundle install'
 
 

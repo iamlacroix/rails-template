@@ -5,12 +5,13 @@
 # ####################
 
 
-OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE  # FIXME is this necessary?
+# OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE  # FIXME is this necessary?
 
 
 # @options hash used for configuration questions
 # 
 @options = {}
+@post_install = []
 
 
 # Set base for git and template file's directory
@@ -95,25 +96,39 @@ puts "Adding core gems"._purple
 
 # Remove sqlite3 gem
 # 
-gsub_file 'Gemfile', /^gem 'sqlite3'$/, ''
+gsub_file 'Gemfile', /^gem 'sqlite3'$/, '' unless @options[:platform] == :jruby
 
 
 
 # Gems :: Development
 # 
-gems_dev = <<-eos
+if @options[:platform] == :jruby
+  gems_dev = <<-eos
 
-group :development do
-  gem 'sqlite3'
-  gem 'quiet_assets'
-  gem 'letter_opener'
-  gem 'thin'
-  gem 'bullet'
-  gem 'awesome_print'
-  gem 'hirb'
+  group :development do
+    gem 'quiet_assets'
+    gem 'letter_opener'
+    gem 'bullet'
+    gem 'awesome_print'
+    gem 'hirb'
+  end
+
+  eos
+else
+  gems_dev = <<-eos
+
+  group :development do
+    gem 'sqlite3'
+    gem 'quiet_assets'
+    gem 'letter_opener'
+    gem 'thin'
+    gem 'bullet'
+    gem 'awesome_print'
+    gem 'hirb'
+  end
+
+  eos
 end
-
-eos
 append_to_file 'Gemfile', gems_dev
 
 
@@ -136,11 +151,14 @@ gem 'rspec-rails',      group: [ :development, :test ]
 
 # Gems :: Global
 #
-gem 'foreman'
 gem 'exception_notification'
 gem 'haml-rails'
 gem 'bourbon'
 gem 'rack-pjax'
+
+unless @options[:platform] == :jruby
+  gem 'foreman'
+end
 
 
 
@@ -282,10 +300,15 @@ git :commit => '-am "init"'
 # 
 puts "\r\n\r\n"
 puts "Be sure to set up your database config – either config/mongoid.yml or config/database.yml"._yellow
-
 puts "\r\n"
-puts "                                         "._green
-puts "  >>  That's it, your app is ready!  <<  "._green
-puts "                                         "._green
+
+if @post_install.empty?
+  puts "                                         "._green
+  puts "  >>  That's it, your app is ready!  <<  "._green
+  puts "                                         "._green
+else
+  @post_install.each { |msg| puts msg }
+end
+
 puts "\r\n"
 exit  # <-- Prevents `bundle install` from executing & hiding the exit message, plus it's already been accomplished.

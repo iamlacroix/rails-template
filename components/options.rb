@@ -13,14 +13,35 @@ def generate_ask(question, choices)
   ask("\r\n\r\n\e[40m\e[32m#{question}\e[0m\r\n\r\n#{choices}\r\n\r\n\e[40m\e[37mChoose:\e[0m")
 end
 
+
+# Set platform
+# 
+puts "\r\n\r\n\e"
+if defined?(RUBY_ENGINE) && RUBY_ENGINE == "jruby"
+  # -JRuby
+  @options[:platform] = :jruby
+  puts "JRuby detected. App will be configured accordingly."._white
+else
+  # -MRI [default]
+  @options[:platform] = :mri
+  puts "MRI Ruby detected. App will be configured accordingly."._white
+end
+
+
+
 # Database
 @options[:db] = generate_ask "Which database would you like to use?", "(1) PostgreSQL [default]\r\n(2) MongoDB"
 
 # App server
-@options[:server] = generate_ask "Which application server would you like to use?", "(1) Unicorn [default]\r\n(2) Puma\r\n(3) Thin"
+if @options[:platform] == :jruby
+  @options[:server] = generate_ask "Which application server would you like to use?", "(1) TorqueBox [default]\r\n(2) Puma"
+else
+  @options[:server] = generate_ask "Which application server would you like to use?", "(1) Unicorn [default]\r\n(2) Puma\r\n(3) Thin"
+end
 
 # Type of production deployment
 @options[:deployment] = generate_ask "How will you be deploying?", "(1) Capistrano\r\n(2) Heroku [default]"
+
 
 
 
@@ -51,6 +72,7 @@ puts "\n\n"
 
 
 
+
 ##
 # Config Results
 ##
@@ -68,13 +90,22 @@ end
 
 # Set app server
 # 
-@options[:server] = case @options[:server]
-  # -Puma
-  when "2" then :puma
-  # -Thin
-  when "3" then :thin
-  # -Unicorn [default]
-  else :unicorn
+if @options[:platform] == :jruby
+  @options[:server] = case @options[:server]
+    # -Puma
+    when "2" then :puma
+    # -TorqueBox [default]
+    else :torquebox
+  end
+else
+  @options[:server] = case @options[:server]
+    # -Puma
+    when "2" then :puma
+    # -Thin
+    when "3" then :thin
+    # -Unicorn [default]
+    else :unicorn
+  end
 end
 
 

@@ -8,6 +8,7 @@
 #   :unicorn
 #   :puma
 #   :thin
+#   :torquebox
 
 
 puts "Configuring app server selection"._purple
@@ -26,11 +27,9 @@ case @options[:server]
   ##
   when :puma
 
-
     # Gems
     # 
     gem 'puma'
-    run 'bundle install'
 
 
 
@@ -38,13 +37,23 @@ case @options[:server]
   ##
   # Thin
   ##
-  when :puma
-
+  when :thin
 
     # Gems
     # 
     gem 'thin'
-    run 'bundle install'
+
+
+
+
+  ##
+  # TorqueBox
+  ##
+  when :torquebox
+
+    # Add post-install instructions
+    # 
+    @post_install << "TorqueBox"._purple + " be sure to run " + "torquebox rails"._white
 
 
 
@@ -52,17 +61,17 @@ case @options[:server]
   ##
   # Unicorn [default]
   ##
-  else
-
+  when :unicorn
 
     # Gems
     # 
     gem 'unicorn'
-    run 'bundle install'
 
 
 
 end
+
+run 'bundle install'
 
 
 
