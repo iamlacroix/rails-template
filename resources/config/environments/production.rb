@@ -46,8 +46,7 @@ Flyby::Application.configure do
 	# config.action_controller.asset_host = "http://assets.example.com"
 
 	# Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-	config.assets.precompile += %w( responsive.js html5.js )
-	# config.assets.precompile += ['responsive.js', 'html5']
+	config.assets.precompile += %w( responsive.js html5.js polyfills.js )
 
 	# Disable delivery errors, bad email addresses will be ignored
 	# config.action_mailer.raise_delivery_errors = false

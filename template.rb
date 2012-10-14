@@ -154,6 +154,7 @@ gem 'rspec-rails',      group: [ :development, :test ]
 gem 'exception_notification'
 gem 'haml-rails'
 gem 'bourbon'
+gem "neat", git: "git@github.com:iamlacroix/neat.git", branch: "gemify"
 gem 'rack-pjax'
 
 unless @options[:platform] == :jruby

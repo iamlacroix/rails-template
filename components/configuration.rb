@@ -75,7 +75,7 @@ end
 
 # Add custom files to precompile
 # 
-gsub_file 'config/environments/production.rb', /# config.assets.precompile.*/, 'config.assets.precompile += %w( responsive.js html5.js )'
+gsub_file 'config/environments/production.rb', /# config.assets.precompile.*/, 'config.assets.precompile += %w( responsive.js html5.js polyfills.js )'
 
 
 # Set SendGrid for production email delivery
@@ -134,7 +134,7 @@ end
 
 # Enable PJAX for links by default
 #
-inject_into_file 'app/assets/javascripts/all.js.coffee', after: /\$\(document\)\.ready ->/ do
+inject_into_file 'app/assets/javascripts/scripts.js.coffee', after: /\$\(document\)\.ready ->/ do
   <<-eos
 \n
 \t# ===== PJAX =====

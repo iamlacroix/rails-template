@@ -8,7 +8,7 @@ Usage
 -----
 
 ```
-rails new myapp -m https://github.com/iamlacroix/rails-template/raw/master/template-base.rb
+rails new myapp -m https://github.com/iamlacroix/rails-template/raw/master/template.rb
 ```
 
 Features
@@ -17,14 +17,15 @@ Features
 ### Front-end libraries/features
 * Haml boilerplate layout
 * Sass boilerplate stylesheet
+* Base styling derived from [normalize.css](http://necolas.github.com/normalize.css/), [Skeleton](http://getskeleton.com), and [Kube](http://kubeframework.com)
+* [Bourbon](http://thoughtbot.com/bourbon/) & [Neat](http://thoughtbot.com/neat/)
 * [respond.js](https://github.com/scottjehl/Respond)
 * [html5shiv](https://github.com/aFarkas/html5shiv)
-* [Bootstrap](http://twitter.github.com/bootstrap/), modified to use [Font Awesome](https://github.com/FortAwesome/Font-Awesome)
 * [Font Awesome](https://github.com/FortAwesome/Font-Awesome)
 * [jQuery Placeholder](https://github.com/mathiasbynens/jquery-placeholder)
 * [jQuery UI](https://github.com/jquery/jquery-ui) + [jQuery UI Touch Punch](https://github.com/furf/jquery-ui-touch-punch)
 * Some basic helper methods in `helpers/application_helper.rb`
-* Adds a `.gitignore`-ed initializer file called `dev_environment.rb` to hold ENV variables
+* Adds a Git-ignored initializer file called `dev_environment.rb` to hold ENV variables
 * Adds newrelic.yml if Heroku is selected (and a newrelic/unicorn initializer if Unicorn is also selected)
 * Automatically injects config's for:
     * rack-pjax
@@ -39,6 +40,7 @@ Features
 * foreman
 * haml-rails
 * bourbon
+* neat
 * rack-pjax
 * exception_notification
 
@@ -61,16 +63,20 @@ Features
 Configuration
 -----
 
-Prompts for the following options:
+Detects whether Ruby or JRuby is being used, and then prompts for the following options:
 
 ##### Database:
 * PostgreSQL [default]
 * MongoDB (w/ Mongoid)
 
-##### Application server:
+##### Application server (Ruby):
 * Unicorn [default]
 * Puma
 * Thin
+
+##### Application server (JRuby):
+* TorqueBox [default]
+* Puma
 
 ##### Deployment
 * Capistrano

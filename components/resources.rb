@@ -35,13 +35,13 @@ end
 
 # -vendor/javascripts
 # 
-%w( html5shim.js respond.js lacroixdesign.js jquery.pjax.js jquery-ui.min.js jquery.placeholder.min.js jquery.ui.touch-punch.min.js lacroixdesign.datepicker.js ).each do |f|
+%w( html5shim.js respond.js selectivizr.js jquery.pjax.js jquery-ui.min.js jquery.placeholder.min.js jquery.ui.touch-punch.min.js swipe.js lacroixdesign.datepicker.js ).each do |f|
   get "#{@resource_path}/vendor/assets/javascripts/#{f}" ,"vendor/assets/javascripts/#{f}"
 end
 
 # -vendor/stylesheets
 # 
-%w( lacroixdesign.css.scss font-awesome.scss lacroixdesign.datepicker.css ).each do |f|
+%w( normalize.css lacroixdesignco-base.css.scss font-awesome.scss lacroixdesign.datepicker.css ).each do |f|
   get "#{@resource_path}/vendor/assets/stylesheets/#{f}" ,"vendor/assets/stylesheets/#{f}"
 end
 
@@ -59,13 +59,13 @@ end
 
 # -app/javascripts
 # 
-%w( application.js html5.js responsive.js all.js.coffee ).each do |f|
+%w( application.js html5.js responsive.js polyfills.js scripts.js.coffee ).each do |f|
   get "#{@resource_path}/app/assets/javascripts/#{f}" ,"app/assets/javascripts/#{f}"
 end
 
 # -app/stylesheets
 # 
-%w( application.css.scss all.css.scss ).each do |f|
+%w( application.css.scss core.css.scss ).each do |f|
   get "#{@resource_path}/app/assets/stylesheets/#{f}" ,"app/assets/stylesheets/#{f}"
 end
 

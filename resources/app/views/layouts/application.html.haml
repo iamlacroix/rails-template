@@ -52,7 +52,12 @@
     /[if lt IE 9]
       = javascript_include_tag "html5"
     
-    = stylesheet_link_tag "application", :media => "all"
+    = stylesheet_link_tag "application", media: "all"
+
+    -# Kore ga CSS3 polyfill, IE6-8 support of CSS3 pseudo-classes with Selectivizr
+    /[if lt IE 9]
+      = javascript_include_tag "polyfills"
+    
     = javascript_include_tag "responsive"
     = csrf_meta_tags
     
@@ -60,28 +65,32 @@
     / %script{ type: "text/javascript", src: "//use.typekit.net/VVVVVVV.js" }
     / :javascript
     /   try{Typekit.load();}catch(e){}
-      
-    -# Kore ga Google Maps
-    -# - if @google_maps
-    -#  script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"
-    -#  / script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&amp;sensor=true"
   
   
   
   
-  %body(onload="setTimeout(function() { window.scrollTo(0, 1) }, 100);")
-    .container-fluid.wrap
-      .container-fluid.header
-        .row-fluid
+  %body
+    /[if lt IE 9]
+      .wrap.chromeframe
+        %div
+          %p
+            %a.close{ href: "#" } x
+            You are using an outdated browser. Please 
+            %a{ href: "http://browsehappy.com/", target: '_blank' } upgrade your browser
+            or 
+            %a{ href: "http://www.google.com/chromeframe/?redirect=true", target: '_blank' } activate Google Chrome Frame
+            to improve your experience.
 
+
+    %header
       
       
-      
-      .container-fluid.body{ data: { 'pjax-container' => true } }
-        != render 'shared/flash', { :flash => flash }
-        = yield
+    .body{ role: 'main', data: { 'pjax-container' => true } }
+      != render 'shared/flash', { :flash => flash }
+      = yield
     
     
+    %footer
     
     
     
@@ -104,15 +113,6 @@
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-
-
-
-
-    -# Kore ga Google Chrome Frame prompt for IE
-    /[if lt IE 8]
-      %script{ type: "text/javascript", src: "http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" }
-      :javascript
-        CFInstall.check({ mode: "overlay" });
 
 
 
