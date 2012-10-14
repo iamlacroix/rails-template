@@ -106,11 +106,6 @@ Detects whether Ruby or JRuby is being used, and then prompts for the following 
 * Adds [wysihtml5](https://github.com/xing/wysihtml5) dependencies & requires them in `app/assets/application.js`
 
 
-Todo
------
-* Break this gargantuan template file into smaller components
-
-
 License
 -----
 Copyright (c) 2012 Michael LaCroix  
