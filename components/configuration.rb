@@ -25,18 +25,6 @@ gsub_file 'config/application.rb', /# config.autoload_paths.+/, 'config.autoload
 gsub_file 'config/application.rb', /# config.time_zone = '.+'/, "config.time_zone = 'Central Time (US & Canada)'"
 
 
-# Add PJAX middleware
-# 
-inject_into_file 'config/application.rb', before: "  end\nend" do
-  <<-eos
-    \r
-    # PJAX
-    # 
-    config.middleware.use Rack::Pjax
-  eos
-end
-
-
 
 
 # --------------------------

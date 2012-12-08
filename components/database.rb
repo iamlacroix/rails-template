@@ -43,7 +43,7 @@ case @options[:db]
     # 
     gem "bson_ext" unless @options[:platform] == :jruby
     gem "mongoid"
-    run 'bundle install'
+    run 'bundle install --quiet'
 
 
     # Remove default database config file &
@@ -80,7 +80,7 @@ case @options[:db]
       gem 'sqlite3',   group: :development
       gem 'rails-erd', group: :development
     end
-    run 'bundle install'
+    run 'bundle install --quiet'
 
 
 

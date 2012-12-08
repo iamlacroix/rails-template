@@ -38,7 +38,7 @@ case @options[:deployment]
     # Gems
     # 
     gem 'capistrano'
-    run 'bundle install'
+    run 'bundle install --quiet'
 
 
     # Fetch Capistrano recipes
@@ -71,7 +71,7 @@ case @options[:deployment]
     # 
     gem 'dalli'
     gem 'newrelic_rpm'
-    run 'bundle install'
+    run 'bundle install --quiet'
 
 
     # Fetch Procfile, Unicorn config, New Relic config

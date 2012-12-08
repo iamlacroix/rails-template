@@ -71,7 +71,7 @@ case @options[:server]
 
 end
 
-run 'bundle install'
+run 'bundle install --quiet'
 
 
 

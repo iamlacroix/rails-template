@@ -35,13 +35,19 @@ end
 
 # -vendor/javascripts
 # 
-%w( html5shim.js respond.js selectivizr.js jquery.pjax.js jquery-ui.min.js jquery.placeholder.min.js jquery.ui.touch-punch.min.js swipe.js lacroixdesign.datepicker.js ).each do |f|
+%w( jquery-ui.min.js jquery.placeholder.min.js jquery.ui.touch-punch.min.js swipe.js ).each do |f|
   get "#{@resource_path}/vendor/assets/javascripts/#{f}" ,"vendor/assets/javascripts/#{f}"
+end
+
+# -vendor/javascripts/polyfills
+# 
+%w( html5shim.js respond.js selectivizr.js ).each do |f|
+  get "#{@resource_path}/vendor/assets/javascripts/polyfills/#{f}" ,"vendor/assets/javascripts/polyfills/#{f}"
 end
 
 # -vendor/stylesheets
 # 
-%w( normalize.css lacroixdesignco-base.css.scss font-awesome.scss lacroixdesign.datepicker.css ).each do |f|
+%w( normalize.css lacroixdesignco-base.css.scss font-awesome.scss ).each do |f|
   get "#{@resource_path}/vendor/assets/stylesheets/#{f}" ,"vendor/assets/stylesheets/#{f}"
 end
 
@@ -130,8 +136,6 @@ end
 %w( shared_methods.rb ).each do |f|
   get "#{@resource_path}/lib/modules/#{f}" ,"lib/modules/#{f}"
 end
-
-# FUTURE: lib/tasks/*
 
 
 

@@ -30,4 +30,10 @@ String.class_eval do
     "\e[37m\e[40m#{self}\e[0m"
   end
 
+  # Output blue text on dark-grey background
+  # 
+  def _blue
+    "\e[34m\e[40m#{self}\e[0m"
+  end
+
 end

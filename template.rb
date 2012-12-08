@@ -54,7 +54,7 @@ apply "#{@component_path}/methods.rb"
 
 # Display logo
 # 
-puts "\r\n\r\n\r\n\r\n"
+puts "\n\n\n"
 puts "                                      "._purple
 puts " -------- LaCroix Design Co. -------- "._white
 puts "                                      "._purple
@@ -154,8 +154,7 @@ gem 'rspec-rails',      group: [ :development, :test ]
 gem 'exception_notification'
 gem 'haml-rails'
 gem 'bourbon'
-gem "neat", git: "git@github.com:iamlacroix/neat.git", branch: "gemify"
-gem 'rack-pjax'
+gem "neat"
 
 unless @options[:platform] == :jruby
   gem 'foreman'
@@ -165,7 +164,7 @@ end
 
 # Install core gems
 # 
-run 'bundle install'
+run 'bundle install --quiet'
 
 puts "Finished adding core gems"._green
 
@@ -231,59 +230,6 @@ apply "#{@component_path}/configuration.rb"
 
 
 
-# #########################
-# 
-#    Optional Features
-# 
-# #########################
-
-# 
-# Authentication
-# 
-apply "#{@component_path}/auth.rb" if @options[:auth]
-
-
-# 
-# Admin
-# 
-apply "#{@component_path}/admin.rb" if @options[:admin]
-
-
-# 
-# Uploads
-# 
-apply "#{@component_path}/uploads.rb" if @options[:uploads]
-
-
-# 
-# Blog
-# 
-apply "#{@component_path}/blog.rb" if @options[:blog]
-
-
-# 
-# CMS
-# 
-apply "#{@component_path}/cms.rb" if @options[:cms]
-
-
-# 
-# wysihtml5
-# 
-if @options[:blog] || @options[:cms] || @options[:admin]
-  apply "#{@component_path}/wysihtml5.rb"
-end
-
-
-
-
-
-# ========================================================================================================================
-
-
-
-
-
 # ####################
 # 
 #       Wrap Up
@@ -299,9 +245,9 @@ git :commit => '-am "init"'
 
 # Sayounara!
 # 
-puts "\r\n\r\n"
+puts "\n\n"
 puts "Be sure to set up your database config – either config/mongoid.yml or config/database.yml"._yellow
-puts "\r\n"
+puts "\n"
 
 if @post_install.empty?
   puts "                                         "._green
@@ -311,5 +257,5 @@ else
   @post_install.each { |msg| puts msg }
 end
 
-puts "\r\n"
+puts "\n"
 exit  # <-- Prevents `bundle install` from executing & hiding the exit message, plus it's already been accomplished.

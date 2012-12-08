@@ -154,7 +154,7 @@
 /* =Buttons
 ================================================== */
 
-	button, .btn {
+	.btn {
 	  position: relative;
 	  cursor: pointer;
 	  outline: none;
@@ -182,13 +182,10 @@
 	  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.6);
 	  text-shadow: 0 1px 0px #ffffff;
 	}
-	button,
-	button:hover,
 	.btn,
 	.btn:hover {
 	  color: #000;
 	}
-	button:hover,
 	.btn:hover {
 	  filter: none;
 	  background: none;
@@ -284,7 +281,6 @@
 	}
 	/* Disabled  */
 	.btn.disabled,
-	button[disabled],
 	.btn[disabled] {
 	  border: none;
 	  filter: none;
