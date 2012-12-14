@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require jquery-ui.min
 //= require jquery.ui.touch-punch.min
-//= require jquery.pjax
 //= require jquery.placeholder.min
 //= require scripts
 //= require_self

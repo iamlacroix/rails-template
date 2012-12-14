@@ -13,7 +13,7 @@ puts "Fetching resources"._purple
 ##
 # Remove Files
 ##
-run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/* app/controllers/* test/"
+run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/* app/controllers/* test/ spec/spec_helper.rb vendor/plugins"
 
 
 
@@ -154,6 +154,24 @@ end
 %w( application_controller.rb home_controller.rb ).each do |f|
   get "#{@resource_path}/app/controllers/#{f}" ,"app/controllers/#{f}"
 end
+
+
+
+# --------------------------
+
+
+
+
+## 
+# Tests
+## 
+
+# -spec
+# 
+%w( spec_helper.rb ).each do |f|
+  get "#{@resource_path}/spec/#{f}" ,"spec/#{f}"
+end
+
 
 
 

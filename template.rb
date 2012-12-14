@@ -125,6 +125,8 @@ else
     gem 'bullet'
     gem 'awesome_print'
     gem 'hirb'
+    gem 'better_errors'
+    gem 'binding_of_caller'
   end
 
   eos
@@ -141,11 +143,15 @@ group :test do
   gem "capybara"
   gem 'shoulda-matchers'
   gem 'factory_girl_rails'
+  gem 'spork-rails'
 end
 
 eos
 append_to_file 'Gemfile', gems_test
+
+
 gem 'rspec-rails',      group: [ :development, :test ]
+gem 'database_cleaner', group: [ :development, :test ]
 
 
 
@@ -185,12 +191,6 @@ puts "Finished adding core gems"._green
 # #########################
 
 # 
-# Fetch resources
-# 
-apply "#{@component_path}/resources.rb"
-
-
-# 
 # Configure database selection
 # 
 apply "#{@component_path}/database.rb"
@@ -212,6 +212,12 @@ apply "#{@component_path}/deployment.rb"
 # RSpec
 # 
 apply "#{@component_path}/rspec.rb"
+
+
+# 
+# Fetch resources
+# 
+apply "#{@component_path}/resources.rb"
 
 
 # 

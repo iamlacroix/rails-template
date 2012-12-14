@@ -56,9 +56,9 @@ body{
 }
 
 /* Inline links     - same color, underlined
-   Standalone links - underlined, usually italc  */
+   Standalone links - underlined  */
 a{
-  @include transition (color 0.2s);
+  @include transition (color, 0.2s);
 }
 
 p,a,h1,h2,h3,h4,h5,label{
