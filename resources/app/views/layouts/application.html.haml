@@ -23,8 +23,7 @@
   
   %head
     %meta(charset="utf-8")
-    %title
-      != ((@page_title || []) << 'TODO: APPLICATION NAME').reject(&:blank?).map {|n| h(n)}.join(' | ')
+    %title=raw [yield(:title), "TODO: APPLICATION NAME"].reject(&:blank?).join(' | ')
     
     -# Kore ga general meta
     %meta{name: "description", content: "TODO: APPLICATION NAME"}
@@ -33,10 +32,10 @@
 
     -# Kore ga Facebook meta
     / %meta{name: "og:title", content: "#{@fb_title || 'TODO: APPLICATION NAME'}"}
-    / %meta{name: "og:image", content: site_logo}
+    / %meta{name: "og:image", content: ""}
     / %meta{name: "og:type", content: "website"}
     / %meta{name: "og:site_name", content: "TODO: APPLICATION NAME"}
-    / %meta{name: "og:admins", content: "39114270"}
+    / %meta{name: "og:admins", content: ""}
     
     -# Kore ga fav and touch icons, iOS meta
     / %link{rel: "shortcut icon", href: "#{root_url}/favicon.png"}
@@ -85,9 +84,8 @@
     %header
       
       
-    .body{ role: 'main', data: { 'pjax-container' => true } }
-      != render 'shared/flash', { :flash => flash }
-      = yield
+    != render 'shared/flash', { :flash => flash }
+    = yield
     
     
     %footer

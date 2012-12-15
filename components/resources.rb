@@ -16,6 +16,13 @@ puts "Fetching resources"._purple
 run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/* app/controllers/* test/ spec/spec_helper.rb vendor/plugins"
 
 
+##
+# Make Dir
+##
+run "mkdir -p app/views/home"
+run "touch app/views/home/index.html.haml"
+
+
 
 
 # --------------------------
@@ -27,10 +34,10 @@ run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts
 # Vendor Assets
 ##
 
-# -vendor/fonts
+# -vendor/fonts/fontawesome
 # 
 %w( fontawesome-webfont.eot fontawesome-webfont.svg fontawesome-webfont.ttf fontawesome-webfont.woff ).each do |f|
-  get "#{@resource_path}/vendor/assets/fonts/#{f}" ,"vendor/assets/fonts/#{f}"
+  get "#{@resource_path}/vendor/assets/fonts/fontawesome/#{f}" ,"vendor/assets/fonts/fontawesome/#{f}"
 end
 
 # -vendor/javascripts
@@ -71,7 +78,7 @@ end
 
 # -app/stylesheets
 # 
-%w( application.css.scss core.css.scss ).each do |f|
+%w( application.css.scss style.css.scss ).each do |f|
   get "#{@resource_path}/app/assets/stylesheets/#{f}" ,"app/assets/stylesheets/#{f}"
 end
 

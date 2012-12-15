@@ -117,31 +117,6 @@ end
 
 
 ##
-#   PJAX
-##
-
-# Enable PJAX for links by default
-#
-inject_into_file 'app/assets/javascripts/scripts.js.coffee', after: /\$\(document\)\.ready ->/ do
-  <<-eos
-\n
-\t# ===== PJAX =====
-\t# 
-\t$('a:not([data-remote]):not([data-behavior]):not([data-skip-pjax])').pjax
-\t\tcontainer: '[data-pjax-container]'
-\t\ttimeout:   1500
-eos
-end
-
-
-
-
-# --------------------------
-
-
-
-
-##
 #   git
 ##
 
