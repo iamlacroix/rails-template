@@ -116,9 +116,9 @@ get "#{@resource_path}/app/views/layouts/application.html.haml" ,"app/views/layo
 
 # -app/views/shared
 # 
-%w( _flash.html.haml _form_errors.html.haml ).each do |f|
-  get "#{@resource_path}/app/views/shared/#{f}" ,"app/views/shared/#{f}"
-end
+# %w().each do |f|
+#   get "#{@resource_path}/app/views/shared/#{f}" ,"app/views/shared/#{f}"
+# end
 
 
 
@@ -136,12 +136,6 @@ end
 # 
 %w( dev_environment.rb ).each do |f|
   get "#{@resource_path}/config/initializers/#{f}" ,"config/initializers/#{f}"
-end
-
-# -lib/modules
-# 
-%w( shared_methods.rb ).each do |f|
-  get "#{@resource_path}/lib/modules/#{f}" ,"lib/modules/#{f}"
 end
 
 
@@ -179,7 +173,4 @@ end
   get "#{@resource_path}/spec/#{f}" ,"spec/#{f}"
 end
 
-
-
-
-puts "Finished fetching resources"._green
+get "#{@resource_path}/.rspec" ,".rspec"

@@ -9,10 +9,6 @@
 #   :heroku
 
 
-puts "Configuring deployment method"._purple
-
-
-
 # Variables
 # 
 heroku_asset_config = <<-eos
@@ -38,24 +34,29 @@ case @options[:deployment]
     # Gems
     # 
     gem 'capistrano'
-    run 'bundle install --quiet'
 
 
-    # Fetch Capistrano recipes
+    # Tasks
     # 
-    get "#{@resource_path}/Capfile", "Capfile"
-    get "#{@resource_path}/config/deploy.rb", "config/deploy.rb"
+    @post_install_tasks << Proc.new do
+      puts "Configuring deployment method"._purple
 
-    %w( base.rb check.rb mongodb.rb nginx.rb nodejs.rb postgresql.rb rbenv.rb redis.rb ruby.rb unicorn.rb utilities.rb ).each do |f|
-      get "#{@resource_path}/config/recipes/#{f}", "config/recipes/#{f}"
-    end
+      # Fetch Capistrano recipes
+      # 
+      get "#{@resource_path}/Capfile", "Capfile"
+      get "#{@resource_path}/config/deploy.rb", "config/deploy.rb"
 
-    %w( foreman.erb mongoid.yml.erb nginx_unicorn.erb postgresql.yml.erb unicorn_init.erb unicorn.rb.erb ).each do |f|
-      get "#{@resource_path}/config/recipes/templates/#{f}", "config/recipes/templates/#{f}"
-    end
+      %w( base.rb check.rb mongodb.rb nginx.rb nodejs.rb postgresql.rb rbenv.rb redis.rb ruby.rb unicorn.rb utilities.rb ).each do |f|
+        get "#{@resource_path}/config/recipes/#{f}", "config/recipes/#{f}"
+      end
 
-    if @options[:db] == :mongodb
-      get "#{@resource_path}/config/recipes/mongodb/manage.rb", "config/recipes/mongodb/manage.rb"
+      %w( foreman.erb mongoid.yml.erb nginx_unicorn.erb postgresql.yml.erb unicorn_init.erb unicorn.rb.erb ).each do |f|
+        get "#{@resource_path}/config/recipes/templates/#{f}", "config/recipes/templates/#{f}"
+      end
+
+      if @options[:db] == :mongodb
+        get "#{@resource_path}/config/recipes/mongodb/manage.rb", "config/recipes/mongodb/manage.rb"
+      end
     end
 
 
@@ -71,34 +72,33 @@ case @options[:deployment]
     # 
     gem 'dalli'
     gem 'newrelic_rpm'
-    run 'bundle install --quiet'
 
 
-    # Fetch Procfile, Unicorn config, New Relic config
+    # Tasks
     # 
-    %w( Procfile ).each do |f|
-      get "#{@resource_path}/#{f}", "#{f}"
-    end
+    @post_install_tasks << Proc.new do
+      puts "Configuring deployment method"._purple
 
-    get "#{@resource_path}/config/newrelic.yml", "config/newrelic.yml"
+      # Fetch Procfile, Unicorn config, New Relic config
+      # 
+      %w( Procfile ).each do |f|
+        get "#{@resource_path}/#{f}", "#{f}"
+      end
 
-    if @options[:server] == :unicorn
-      get "#{@resource_path}/config/unicorn.rb", "config/unicorn.rb"
-      get "#{@resource_path}/config/initializers/new_relic.rb", "config/initializers/new_relic.rb"
-    end
+      get "#{@resource_path}/config/newrelic.yml", "config/newrelic.yml"
 
+      if @options[:server] == :unicorn
+        get "#{@resource_path}/config/unicorn.rb", "config/unicorn.rb"
+        get "#{@resource_path}/config/initializers/new_relic.rb", "config/initializers/new_relic.rb"
+      end
 
-    # Fix asset compilation during git-push
-    # 
-    inject_into_file 'config/application.rb', before: "  end\nend" do
-      heroku_asset_config
+      # Fix asset compilation during git-push
+      # 
+      inject_into_file 'config/application.rb', before: "  end\nend" do
+        heroku_asset_config
+      end
     end
 
 
 
 end
-
-
-
-
-puts "Finished configuring deployment method"._green

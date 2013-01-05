@@ -53,7 +53,7 @@ case @options[:server]
 
     # Add post-install instructions
     # 
-    @post_install << "TorqueBox"._purple + " be sure to run " + "torquebox rails"._white
+    @post_install_messages << "TorqueBox"._purple + " be sure to run " + "torquebox rails"._white
 
 
 
@@ -70,10 +70,3 @@ case @options[:server]
 
 
 end
-
-run 'bundle install --quiet'
-
-
-
-
-puts "Finished configuring app server selection"._green

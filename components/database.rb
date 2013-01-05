@@ -9,9 +9,6 @@
 #   :mongodb
 
 
-puts "Configuring database selection"._purple
-
-
 # Variables
 # 
 mongo_railties = <<-eos
@@ -43,19 +40,21 @@ case @options[:db]
     # 
     gem "bson_ext" unless @options[:platform] == :jruby
     gem "mongoid"
-    run 'bundle install --quiet'
 
 
-    # Remove default database config file &
-    #   create MongoDB config in it's place
+    # Tasks
     # 
-    run "rm -Rf config/database.yml"
-    generate 'mongoid:config'
+    @post_install_tasks << Proc.new do
+      puts "Configuring database selection"._purple
+      
+      # Remove default database config file &
+      #   create MongoDB config in it's place
+      # 
+      run "rm -Rf config/database.yml"
+      generate 'mongoid:config'
 
-
-    # Disable ActiveRecord references within the application's config files
-    # 
-    if @options[:db] == :mongodb
+      # Disable ActiveRecord references within the application's config files
+      # 
       gsub_file 'config/application.rb', /require 'rails\/all'/, mongo_railties
       gsub_file 'config/application.rb', "config.active_record.whitelist_attributes = true", "# config.active_record.whitelist_attributes = true"
       gsub_file 'config/environments/development.rb', "config.active_record.auto_explain_threshold_in_seconds = 0.5", "# config.active_record.auto_explain_threshold_in_seconds = 0.5"
@@ -80,14 +79,8 @@ case @options[:db]
       gem 'sqlite3',   group: :development
       gem 'rails-erd', group: :development
     end
-    run 'bundle install --quiet'
 
 
 
 
 end
-
-
-
-
-puts "Finished configuring database selection"._green

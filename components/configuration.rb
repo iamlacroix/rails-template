@@ -15,11 +15,6 @@ puts "Customizing config files"._purple
 ##
 
 
-# Add autoload paths
-# 
-gsub_file 'config/application.rb', /# config.autoload_paths.+/, 'config.autoload_paths += %W( #{config.root}/lib/modules )'
-
-
 # Set time zone to US/Central
 # 
 gsub_file 'config/application.rb', /# config.time_zone = '.+'/, "config.time_zone = 'Central Time (US & Canada)'"
@@ -82,7 +77,7 @@ inject_into_file 'config/environments/production.rb', after: /^.*::Application.c
     :authentication => :plain,
     :user_name      => ENV['SENDGRID_USERNAME'],
     :password       => ENV['SENDGRID_PASSWORD'],
-    :domain         => 'heroku.com'  # FIXME replace with proper :domain
+    :domain         => 'heroku.com'
   }
   eos
 end
@@ -129,8 +124,3 @@ config/initializers/dev_environment.rb
 .powder
   eos
 end
-
-
-
-
-puts "Finished customizing config files"._green

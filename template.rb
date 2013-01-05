@@ -11,7 +11,8 @@
 # @options hash used for configuration questions
 # 
 @options = {}
-@post_install = []
+@post_install_tasks = []
+@post_install_messages = []
 
 
 # Set base for git and template file's directory
@@ -168,14 +169,6 @@ end
 
 
 
-# Install core gems
-# 
-run 'bundle install --quiet'
-
-puts "Finished adding core gems"._green
-
-
-
 
 
 # ========================================================================================================================
@@ -209,12 +202,6 @@ apply "#{@component_path}/deployment.rb"
 
 
 # 
-# RSpec
-# 
-apply "#{@component_path}/rspec.rb"
-
-
-# 
 # Fetch resources
 # 
 apply "#{@component_path}/resources.rb"
@@ -224,6 +211,18 @@ apply "#{@component_path}/resources.rb"
 # Modify config files + add customizations
 # 
 apply "#{@component_path}/configuration.rb"
+
+
+# 
+# Install Gems
+# 
+run 'bundle install'
+
+
+# 
+# Run post-install tasks
+# 
+@post_install_tasks.each {|task| task.call}
 
 
 
@@ -255,12 +254,12 @@ puts "\n\n"
 puts "Be sure to set up your database config – either config/mongoid.yml or config/database.yml"._yellow
 puts "\n"
 
-if @post_install.empty?
+if @post_install_messages.empty?
   puts "                                         "._green
   puts "  >>  That's it, your app is ready!  <<  "._green
   puts "                                         "._green
 else
-  @post_install.each { |msg| puts msg }
+  @post_install_messages.each { |msg| puts msg }
 end
 
 puts "\n"
