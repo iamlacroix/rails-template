@@ -1,6 +1,6 @@
 /*
 * LaCroix Design :: Base Styles
-* Version 1.0
+* Version 1.1
 * Free to use under the MIT license.
 * 2012/9/30
 * 
@@ -31,19 +31,19 @@
 /* =Mixins + Variables
 ================================================== */
 
-  // --- Neat Variables/Breakpoints ---
+  // --- Bourbon Neat Breakpoints ---
   $width-ipad: 768px;
   $width-desktop: 900px;
   $width-large-screen: 1200px;
 
   // --- Faux Box Shadow (IE8) ---
-  @mixin faux-box-shadow($border: border, $size: 1px, $color: #CCC){
+  @mixin faux-box-shadow($border: border, $size: 1px, $color: #CCC) {
     #{$border}: #{$size} solid #{$color};
     #{$border}: 0 solid rgba(0,0,0,0);
   }
 
   // --- Mostly cross-browser opacity ---
-  @mixin oh-pacity($level: 1){
+  @mixin oh-pacity($level: 1) {
     $ms-level: $level*100;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$ms-level})";
     filter: alpha(opacity=#{$ms-level});
@@ -54,25 +54,25 @@
   
 
   // --- Text Shadows ---
-  @mixin shadow-dark{
+  @mixin shadow-dark {
     text-shadow: -1px -1px 1px rgba(0,0,0, 0.8);
   }
-  @mixin shadow-light{
+  @mixin shadow-light {
     text-shadow: 1px 1px 1px rgba(255,255,255, 0.8);
   }
 
   // --- Media Queries ---
-  @mixin tablet{
+  @mixin tablet {
       @media screen and (min-width: 768px) {
         @content;
       }
   }
-  @mixin desktop{
+  @mixin desktop {
       @media screen and (min-width: 960px) {
         @content;
       }
   }
-  @mixin retina{
+  @mixin retina {
       @media only screen and (-moz-min-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5){
         @content;
       }
@@ -82,32 +82,35 @@
 /* =Basic Styles
 ================================================== */
   
-  html body{
+  html body {
     -webkit-font-smoothing: antialiased !important;
     /* <<< For IE >>> */
     padding-left: 0;
     padding-right: 0;
   }
   body {
-    padding: 0;
-    margin: 0;
+    background: #FFF;
     color: #444;
-    background: #fff;
     font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 100%; /* 16px = 100% */
     font-weight: normal;
     line-height: 1.25;
+    margin: 0;
+    padding: 0;
   }
-  ::selection{
-    text-shadow: none;
+  ::selection {
     background: #DDD;
+    text-shadow: none;
   }
 
 
 /* =Typography
 ================================================== */
 
-  h1,h2,h3,h4,h5,h6{ margin: 0.75em 0; }
+  h1,h2,h3,h4,h5,h6 {
+    line-height: 1.5;
+    margin: 0;
+  }
   
   p { margin: 0 0 20px 0; }
   p img { margin: 0; }
@@ -137,9 +140,9 @@
 /* =Lists
 ================================================== */
   ul, ol { margin-bottom: 20px; padding: 0; }
-  ul { list-style: none outside; }
+  ul { list-style: circle; }
   ol { list-style: decimal; }
-  ol, ul.square, ul.circle, ul.disc { margin-left: 30px; }
+  ol, ul { margin-left: 30px; }
   ul.square { list-style: square outside; }
   ul.circle { list-style: circle outside; }
   ul.disc { list-style: disc outside; }
@@ -149,6 +152,10 @@
   ol ol li, ol ul li { margin-bottom: 6px; }
   li { margin-bottom: 12px; }
   ul.large li { line-height: 21px; }
+  @mixin unstyled-list {
+    list-style: none outside;
+    margin: 0;
+  }
 
 
 /* =Buttons
@@ -361,7 +368,7 @@
     padding-left: 0.5em;
     color: #666;
   }
-  th, td{
+  th, td {
     border-bottom: 1px solid #eeeeee;
     padding: 0.75em 0.5em;
     text-align: left;
@@ -408,5 +415,3 @@
   .remove-bottom { margin-bottom: 0 !important; }
   .half-bottom { margin-bottom: 10px !important; }
   .add-bottom { margin-bottom: 20px !important; }
-
-
