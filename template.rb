@@ -158,7 +158,7 @@ gem 'database_cleaner', group: [ :development, :test ]
 
 # Gems :: Global
 #
-gem 'exception_notification'
+gem "exception_notification", '2.6.1'
 gem 'haml-rails'
 gem 'bourbon'
 gem "neat"
