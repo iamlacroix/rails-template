@@ -99,6 +99,13 @@ end
 inject_into_file 'config/routes.rb', after: /^.*::Application.routes.draw do/ do
   <<-eos
   \n
+  # Style Guide
+  unless Rails.env.production?
+    resource :style do
+      match ':action'
+    end
+  end
+  
   root to: 'home#index'
   eos
 end

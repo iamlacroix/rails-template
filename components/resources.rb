@@ -13,7 +13,7 @@ puts "Fetching resources"._purple
 ##
 # Remove Files
 ##
-run "rm -Rf README* public/index.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/* app/controllers/* test/ spec/spec_helper.rb vendor/plugins"
+run "rm -Rf README* public/index.html public/500.html public/422.html app/assets/images/* app/assets/javascripts/* app/assets/stylesheets/* app/views/layouts/* app/helpers/* app/controllers/* test/ spec/spec_helper.rb vendor/plugins"
 
 
 ##
@@ -120,11 +120,19 @@ get "#{@resource_path}/app/helpers/application_helper.rb" ,"app/helpers/applicat
 # 
 get "#{@resource_path}/app/views/layouts/application.html.haml" ,"app/views/layouts/application.html.haml"
 
-# -app/views/shared
+# -app/views/styles
 # 
-# %w().each do |f|
-#   get "#{@resource_path}/app/views/shared/#{f}" ,"app/views/shared/#{f}"
-# end
+get "#{@resource_path}/app/views/styles/show.html.haml" ,"app/views/styles/show.html.haml"
+
+# -app/views/errors
+# 
+get "#{@resource_path}/app/views/errors/404.html.haml" ,"app/views/errors/404.html.haml"
+
+# -public/500.html
+# 
+%w( 500.html 422.html ).each do |f|
+  get "#{@resource_path}/public/#{f}" ,"public/#{f}"
+end
 
 
 
@@ -158,7 +166,7 @@ end
 
 # -home
 # 
-%w( application_controller.rb home_controller.rb ).each do |f|
+%w( application_controller.rb home_controller.rb styles_controller.rb ).each do |f|
   get "#{@resource_path}/app/controllers/#{f}" ,"app/controllers/#{f}"
 end
 
