@@ -36,8 +36,14 @@ run "touch app/views/home/index.html.haml"
 
 # -vendor/fonts/fontawesome
 # 
-%w( fontawesome-webfont.eot fontawesome-webfont.svg fontawesome-webfont.ttf fontawesome-webfont.woff ).each do |f|
+%w( fontawesome-webfont.eot fontawesome-webfont.ttf fontawesome-webfont.woff ).each do |f|
   get "#{@resource_path}/vendor/assets/fonts/fontawesome/#{f}" ,"vendor/assets/fonts/fontawesome/#{f}"
+end
+
+# -vendor/fonts/icomoon
+# 
+%w( icomoon.eot icomoon.svg icomoon.ttf icomoon.woff ).each do |f|
+  get "#{@resource_path}/vendor/assets/fonts/icomoon/#{f}" ,"vendor/assets/fonts/icomoon/#{f}"
 end
 
 # -vendor/javascripts
@@ -54,7 +60,7 @@ end
 
 # -vendor/stylesheets
 # 
-%w( normalize.css lacroixdesignco-base.css.scss font-awesome.scss ).each do |f|
+%w( normalize.css lacroixdesignco-base.css.scss font-awesome.scss icomoon.scss ).each do |f|
   get "#{@resource_path}/vendor/assets/stylesheets/#{f}" ,"vendor/assets/stylesheets/#{f}"
 end
 
