@@ -23,21 +23,21 @@
   
   %head
     %meta(charset="utf-8")
-    %title=raw [yield(:title), "TODO: APPLICATION NAME"].reject(&:blank?).join(' | ')
+    %title=raw [yield(:title), "FIXME: APPLICATION NAME"].reject(&:blank?).join(' | ')
     
     -# Kore ga general meta
-    %meta{name: "description", content: "TODO: APPLICATION NAME"}
+    %meta{name: "description", content: "FIXME: APPLICATION DESCRIPTION"}
     %meta{name: "author", content: "Michael LaCroix, James LaCroix"}
     %meta{:'http-equiv' => "X-UA-Compatible", content: "chrome=1"}
 
     -# Kore ga Facebook meta
-    / %meta{name: "og:title", content: "#{@fb_title || 'TODO: APPLICATION NAME'}"}
+    / %meta{name: "og:title", content: "#{@fb_title || 'FIXME: APPLICATION NAME'}"}
     / %meta{name: "og:image", content: ""}
     / %meta{name: "og:type", content: "website"}
-    / %meta{name: "og:site_name", content: "TODO: APPLICATION NAME"}
+    / %meta{name: "og:site_name", content: "FIXME: APPLICATION NAME"}
     / %meta{name: "og:admins", content: ""}
     
-    -# Kore ga fav and touch icons, iOS meta
+    -# Kore ga fav and touch icons (reside in the /public folder), plus iOS meta
     / %link{rel: "shortcut icon", href: "#{root_url}/favicon.png"}
     / %link{rel: "apple-touch-icon", href: "#{root_url}/apple-touch-icon-57x57-precomposed.png"}
     / %link{rel: "apple-touch-icon-precomposed", sizes: "72x72", href: "#{root_url}/apple-touch-icon-72x72-precomposed.png"}
@@ -60,7 +60,7 @@
     = javascript_include_tag "responsive"
     = csrf_meta_tags
     
-    -# Kore ga Typekit
+    -# Kore ga Typekit -- replace VVVVVVV with the proper kit code
     / %script{ type: "text/javascript", src: "//use.typekit.net/VVVVVVV.js" }
     / :javascript
     /   try{Typekit.load();}catch(e){}
@@ -81,14 +81,13 @@
             to improve your experience.
 
 
-    %header
+    %header.header
       
       
-    != render 'shared/flash', { :flash => flash }
     = yield
     
     
-    %footer
+    %footer.footer
     
     
     
@@ -101,6 +100,7 @@
     = javascript_include_tag "application"
     
     
+    -# Kore ga Google Analytics -- replace VVVVVVVV with the proper code
     :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-VVVVVVVV-1']);
@@ -116,8 +116,8 @@
 
     
     
-    -# Kore ga Dev Width Plugin
+    -# Kore ga Width Plugin
     - if Rails.env.development?
-      #dev-browserwidth{style: "position:fixed; bottom:0; left:0; background:#555; color:#CCC; font-size:0.75em; padding:0.25em; text-shadow:black 1px 1px 1px; font-weight:normal;"}
+      #lacroixdesign-browserwidth{style: "position:fixed; bottom:0; left:0; background:#555; color:#CCC; font-size:0.75em; padding:0.25em; text-shadow:black 1px 1px 1px; font-weight:normal;"}
       :javascript
         function showWidth(){var w = $(window).width();$('#dev-browserwidth').text(w);}showWidth();$(window).resize(function(){showWidth();});
