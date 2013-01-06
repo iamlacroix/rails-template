@@ -97,6 +97,20 @@ case @options[:deployment]
       inject_into_file 'config/application.rb', before: "  end\nend" do
         heroku_asset_config
       end
+
+      # Enable asset compression
+      # 
+      inject_into_file 'config.ru', before: "run " do
+        "use Rack::Deflater\n"
+      end
+      
+      # Enable asset caching
+      # 
+      cache_assets_configuration = <<-eos.gsub(/^ {8}/,'')
+        config.serve_static_assets  = true
+          config.static_cache_control = "public, max-age=31536000"
+      eos
+      gsub_file 'config/environments/production.rb', /config.serve_static_assets.*/, cache_assets_configuration
     end
 
 
