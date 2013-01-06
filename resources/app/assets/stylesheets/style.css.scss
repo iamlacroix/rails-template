@@ -1,39 +1,35 @@
-/************************
+/* --------------------------------------------------------
   
-  Style for     :: LaCroix Design Co. Website
-  Website       :: http://lacroixdesign.net
-  Designed by   :: LaCroix Design Co. | James LaCroix
-  Developed by  :: LaCroix Design Co. | Michael LaCroix
+  # Style for     :: LaCroix Design Co. Website
+  # Website       :: http://lacroixdesign.net
+  # Designed by   :: LaCroix Design Co. | James LaCroix
+  # Developed by  :: LaCroix Design Co. | Michael LaCroix
   
-  Typefaces ::
-    Serif               Caslon Pro
-    Sans-serif          Helvetica Neue
-    Base font size      16px / 1em
+  # Typefaces
+  - Serif               Georgia
+  - Sans-serif          Helvetica Neue
     
-  Colors ::
-    Description         [ColorCode]
-    
-************************/
+***-------------------------------------------------------/
 
 
-// =======================
-// SASS Variables/Mixins
-// =======================
 
-// --- Colors/Patterns ---
-// 
-$white:     #FFFFFF; /* text/footer */
+
+
+/* ------------------------------------------------------
+/ Sass Variables & Mixins
+*/
+
+// --- Colors & Patterns --- //
+$white:     #FFFFFF;
 $grey:      #666666;
 $dark-grey: #333333;
 
 
-// --- Common Metrics ---
-// 
+// --- Metrics --- //
 $page-padding: 1em;  /* Side padding for page */
 
 
-// --- Typefaces ---
-// 
+// --- Typefaces --- //
 $type-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
 $type-serif: Georgia, Cambria, "Times New Roman", Times, serif;
 
@@ -45,41 +41,34 @@ $type-serif: Georgia, Cambria, "Times New Roman", Times, serif;
 / Basic Elements
 */ 
 
-body{
-  background: white;
-  font-family: $type-serif;
+body {
+  background: inherit;
+  color: inherit;
+  font-family: $type-sans;
+  text-shadow: 1px 1px 1px transparent;
 }
 
-/* Inline links     - same color, underlined
-   Standalone links - underlined  */
-a{
+a {
   @include transition (color, 0.2s);
 }
 
-p,a,h1,h2,h3,h4,h5,label{
+p,a,h1,h2,h3,h4,h5,label {
   font-family: inherit;
 }
 
-h1{}
+h1 {}
 
-h2{}
+h2 {}
 
-h3{}
+h3 {}
 
-h4{}
+h4 {}
 
-h5{}
+h5 {}
 
-h6{}
+h6 {}
 
-p{}
-
-
-
-
-
-
-
+p {}
 
 
 
@@ -89,16 +78,10 @@ p{}
 / Header
 */ 
 
-body > header{
+header.header {
   @include outer-container;
-  padding: 1em $page-padding;
+  padding: 0 $page-padding;
 }
-
-
-
-
-
-
 
 
 
@@ -108,57 +91,28 @@ body > header{
 / General
 */ 
 
-.outdated-browser{
-  > div{
+.container {
+  @include outer-container;
+  padding: 0 $page-padding;
+}
+
+.outdated-browser {
+  > div {
     @include outer-container;
     padding: 10px $page-padding;
-    p{
-      margin: 0;
+    p {
       color: $dark-grey;
-      font-size: 0.8em;
       font-family: $type-sans;
+      font-size: 0.8em;
+      margin: 0;
       text-shadow: 0 -1px 1px rgba(0,0,0, 0.2);
     }
-    a.close{
+    a.close {
       float: right;
       text-decoration: none;
     }
   }
 }
-
-section.alerts{
-  @include outer-container;
-  padding: 20px $page-padding;
-}
-
-section.alerts{
-  padding-bottom: 10px;
-  .alert{
-    padding: 10px;
-    margin: 10px 0;
-    background: #F8F8F8;
-    border-bottom: 1px solid #DDD;
-    p{
-      margin: 0;
-      font-size: 13px;
-    }
-    a.close{
-      float: right;
-      text-decoration: none;
-    }
-    &.success{
-      color: #0F830F;
-    }
-    &.error{
-      color: #C22C56;
-    }
-    &:hover{
-      border-bottom: 1px solid #C5C5C5;
-    }
-  }
-}
-
-
 
 
 
@@ -168,7 +122,7 @@ section.alerts{
 / Footer
 */ 
 
-body > footer{
+footer.footer {
   @include outer-container;
-  padding: 2em $page-padding;
+  padding: 0 $page-padding;
 }
