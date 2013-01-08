@@ -93,6 +93,7 @@
     color: #444;
     font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 100%; /* 16px = 100% */
+    -webkit-font-smoothing: antialiased !important;
     font-weight: normal;
     line-height: 1.25;
     margin: 0;
@@ -128,6 +129,10 @@
   blockquote cite a, blockquote cite a:visited, blockquote cite a:visited { color: #555; }
 
   hr { border: solid #ddd; border-width: 1px 0 0; clear: both; margin: 10px 0 30px; height: 0; }
+
+  input, textarea, button, select {
+    -webkit-font-smoothing: antialiased !important;
+  }
 
 
 /* =Links
