@@ -1,14 +1,9 @@
 /*
+*
 * LaCroix Design :: Base Styles
-* Version 1.1
+* Version 0.0.1
 * Free to use under the MIT license.
-* 2012/9/30
 * 
-* Some styles are derived from:
-*   Skeleton :: http://getskeleton.com
-*     -> forms & a few typography elements
-*   Kube :: http://kubeframework.com
-*     -> buttons & tables
 */
 
 
@@ -31,7 +26,7 @@
 /* =Mixins + Variables
 ================================================== */
 
-  // --- Bourbon Neat Breakpoints ---
+  // --- Media Breakpoints ---
   $width-ipad: 768px;
   $width-desktop: 900px;
   $width-large-screen: 1200px;
@@ -112,6 +107,12 @@
     line-height: 1.5;
     margin: 0;
   }
+  h1 {}
+  h2 { font-size: 1.75em; }
+  h3 { font-size: 1.5em; }
+  h4 { font-size: 1.25em; }
+  h5 { font-size: 1em  }
+  h6 { font-size: 0.75em; }
   
   p { margin: 0 0 20px 0; }
   p img { margin: 0; }
@@ -122,7 +123,13 @@
   small { font-size: 80%; }
 
 /*  Blockquotes  */
-  blockquote, blockquote p { font-size: 17px; line-height: 24px; color: #777; font-style: italic; }
+  blockquote,
+  blockquote p {
+    font-size: 1.125em;
+    line-height: 24px;
+    color: #777;
+    font-style: italic;
+  }
   blockquote { margin: 0 0 20px; padding: 9px 20px 0 19px; border-left: 1px solid #ddd; }
   blockquote cite { display: block; font-size: 12px; color: #555; }
   blockquote cite:before { content: "\2014 \0020"; }
@@ -135,6 +142,7 @@
   }
 
 
+
 /* =Links
 ================================================== */
   a, a:visited { color: inherit; text-decoration: none; outline: 0; }
@@ -144,19 +152,19 @@
 
 /* =Lists
 ================================================== */
-  ul, ol { margin-bottom: 20px; padding: 0; }
+  ul, ol { margin-bottom: 1.25em; padding: 0; }
   ul { list-style: circle; }
   ol { list-style: decimal; }
-  ol, ul { margin-left: 30px; }
+  ol, ul { margin-left: 2em; }
   ul.square { list-style: square outside; }
   ul.circle { list-style: circle outside; }
   ul.disc { list-style: disc outside; }
   ul ul, ul ol,
-  ol ol, ol ul { margin: 4px 0 5px 30px; font-size: 90%;  }
+  ol ol, ol ul { margin: 0.25em 0 0.25em 2em; font-size: 90%;  }
   ul ul li, ul ol li,
-  ol ol li, ol ul li { margin-bottom: 6px; }
-  li { margin-bottom: 12px; }
-  ul.large li { line-height: 21px; }
+  ol ol li, ol ul li { margin-bottom: 0.5em; }
+  li { margin-bottom: 0.5em; }
+  ul.large li { line-height: 1.25em; }
   @mixin unstyled-list {
     list-style: none outside;
     margin: 0;
@@ -175,10 +183,10 @@
     text-decoration: none;
     font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
     line-height: 1;
-    font-size: 13px;
+    font-size: 0.75em;
     font-weight: normal;
-    padding: 6px 16px;
-    border-radius: 4px;
+    padding: 0.375em 1em;
+    border-radius: 0.25em;
     background-color: #f3f3f3;
     background-image: -moz-linear-gradient(top, #ffffff, #e1e1e1);
     background-image: -ms-linear-gradient(top, #ffffff, #e1e1e1);
@@ -209,7 +217,7 @@
   /* Active  */
   .btn-big.btn-active,
   .btn-big.btn-active:hover {
-    padding: 11px 25px;
+    padding: 0.75em 1.5em;
   }
   .btn-active,
   .btn-active:hover {
@@ -220,7 +228,7 @@
     filter: none;
     background-color: #ddd;
     text-shadow: 0 1px 0px rgba(255, 255, 255, 0.8);
-    padding: 7px 17px 8px 17px;
+    padding: 0.5em 2em 0.5em 2em;
   }
   /* Small */
   .btn-small {
@@ -232,8 +240,8 @@
   }
   /* Big */
   .btn-big {
-    padding: 10px 24px;
-    font-size: 20px;
+    padding: 0.625em 1.5em;
+    font-size: 1.25em;
   }
   /* Square */
   .btn-square {
@@ -243,7 +251,7 @@
   }
   /* Round */
   .btn-round {
-    border-radius: 15px;
+    border-radius: 1em;
     border-radius: 0 \0;
     /* ie9 hack */
   }
@@ -254,7 +262,7 @@
   /* Group  */
   .btn-group {
     display: inline-block;
-    margin-right: 2px;
+    margin-right: 0.125em;
     vertical-align: bottom;
   }
   .btn-group:after {
@@ -270,26 +278,26 @@
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
     border-radius: 0;
-    margin-left: -1px;
+    margin-left: -0.0625em;
   }
   .btn-group > .btn:first-child {
-    border-radius: 4px 0 0 4px;
+    border-radius: 0.25em 0 0 0.25em;
   }
   .btn-group > .btn:last-child {
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 0.25em 0.25em 0;
   }
   .btn-group > .btn.btn-round:first-child,
   .btn-group > .input-search:first-child {
-    border-radius: 15px 0 0 15px;
+    border-radius: 1em 0 0 1em;
   }
   .btn-group > .btn.btn-round:last-child,
   .btn-group > .input-search:last-child {
-    border-radius: 0 15px 15px 0;
+    border-radius: 0 1em 1em 0;
   }
   /* Append  */
   .btn-append {
-    margin-left: -2px;
-    border-radius: 0 4px 4px 0;
+    margin-left: -0.125em;
+    border-radius: 0 0.25em 0.25em 0;
   }
   /* Disabled  */
   .btn.disabled,
@@ -308,10 +316,10 @@
 ================================================== */
 
   form {
-    margin-bottom: 20px; }
+    margin-bottom: 1.25em; }
   fieldset {
     padding: 0;
-    margin: 0 0 20px 0;
+    margin: 0 0 1.25em 0;
     border: none; }
   input[type="text"],
   input[type="password"],
@@ -330,11 +338,11 @@
     width: 210px;
     max-width: 100%;
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: 1.25em;
     background: #fff; }
   select {
-    height: 26px;
-    line-height: 26px;
+    height: 1.625em;
+    line-height: 1.625em;
     padding: 0; }
   input[type="text"]:focus,
   input[type="password"]:focus,
@@ -350,18 +358,19 @@
   label,
   legend {
     display: block;
-    margin-bottom: 3px;
+    margin-bottom: 0.25em;
     font-weight: bold;
-    font-size: 13px;  }
+    font-size: 0.8125em;  }
   select {
-    width: 220px; }
+    width: 15em; }
   input[type="checkbox"] {
     display: inline; }
   label span,
   legend span {
     font-weight: normal;
-    font-size: 13px;
+    font-size: 0.875em;
     color: #444; }
+
 
 
 /* =Tables
