@@ -8,7 +8,7 @@ Usage
 -----
 
 ```
-rails new myapp -m https://github.com/iamlacroix/rails-template/raw/master/template.rb
+rails new APP_NAME -m https://github.com/iamlacroix/rails-template/raw/master/template.rb
 ```
 
 
