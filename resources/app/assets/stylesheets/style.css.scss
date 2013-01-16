@@ -89,7 +89,7 @@ header.header {
 / General
 */ 
 
-.container {
+.constrained {
   @include outer-container;
   padding: 0 $page-padding;
 }
